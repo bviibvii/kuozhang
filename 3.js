@@ -196,12 +196,7 @@ class ExampleExtension {
 
   base64Encode(originalString) {
     // 将字符串转换为二进制字符串
-    return originalString;const encoder = new TextEncoder();
-    const uint8Array = encoder.encode(str);
-    // 将Uint8Array转换为二进制字符串
-   const binaryString = String.fromCharCode(...uint8Array);
-    // Base64编码
-    return window.btoa(binaryString);
+    return originalString;
   }
 
   base64Decode(base64str) {
