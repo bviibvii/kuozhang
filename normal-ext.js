@@ -4,7 +4,7 @@ class ExampleExtension {
     return {
       // 必选:此扩展的机器可读名称。
       //将用作扩展的命名空间。不得包含“.”性格。
-      id: 'hashAndEncrypt',
+      id: "hashAndEncrypt",
 
       // 可选项:字符串形式的此扩展的可读名称。
       //字符串或对“intlDefineMessage”的调用；普通字符串不会被
@@ -16,19 +16,19 @@ class ExampleExtension {
       //ID相同但没有冲突的消息。
       //在内部命名消息，这样两个扩展可以有
       //参见:https://github.com/yahoo/react-intl/wiki/API#definemessages
-      name: '哈希与加密',
+      name: "哈希与加密",
       // block color
-      color1: '#4D7EB4',
+      color1: "#4D7EB4",
       // Optional: URI for an icon for this extension. Data URI OK.
       menuIconURI:
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DE' +
-        'UIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==',
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DE" +
+        "UIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==",
       
-      blockIconURI: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEtklEQVRoge2ZW4hWVRTHf984Kk1jlj2kI2H2UIwRacVot7EiSLtQBFlPRWUvSQTdsJCCyogy6CWSiMoeqrGioKDJLmpWYxcjxyZSJ4hRuznihZnQRj09rP/unO+b852z9/edT3qYPxz2OXuv9V9rX87Za68DYxhDQ1AqmO9sYAEwDzgDaAMmq20/8BuwDegBuoEfC7Y/CuOAl4HdwAfAyRmy44E7gF4gCrw2A7eLoxpagC758jZwXEhHbqww+FIVuYuBvoTcHuBN4DagA5ghR1p036G2Lsk6vT7goio2llf4cndIR96X0tPAQeCIOpfE/cCI5AaAxUBzgI1m4E7pRuK6t0LmioT9JyT3TYANfpHS6SKPgMPAc8DMBGkErAAmhpBXYCLwbILvcezdekydiICngON1P0TAuz0opTY9P0g8+u76B5uForBYnBE2AxFwFFsVJWACNphHyX6nyrBJRFcm6s4BPiLuyJL6fR+FJQn+dcCFibY5qt8RQuiWzocV9d2qf71WTz3wRhXbq1T/YgjZNOy7HwGPqO4SPR8ATqrH0xxMkY1INgHuwpbUIeDMUMKbpRwBn2BT7b5kjcYK2foUeJcClvMiYG+CaASbrUZjOvZiO7vD2Ke6LpxCvG6/rpcsAN/K5jvAqXnCTR6EfwK/6n5t7X4FY53KrXh8qXw6AvbpBfgipe1qYKeMLfTk89HbUGG7EGzDpnl2StsO4rU8EMCZp3eu2rb6kPnOiAvF93jKF4FBlScWSepinpaUtoXY6A5gZxFf5Om1yObBIE9z4JbAsYa3XZ+ldVp9vhSCun3oAP7ARuXLAL2vdCXPJ83A56oP4YmA34HzA/TK0IntqBEWJrQG6G6R3irsKDAdeE11vQE8rcQhyhDVT5FVMYP4TLKS8CTFfOJBSF7DxIGgL5qwiDcC/sJjl3coYUFiBKzBEhG1YA7wHjYgg9jIpu1DPhiX8OljPAf2Bins5dgEiL5oA/Zhvl3vo7BZwvc10Kla8QDm2/d5gudJcB922P+/oZV4VsqWaeU+cq3K1diL6TAN+A74rEEOpmEtFsonl/cQ8Jbur8tSXoP1NpnDmgn0E395phblaQamJuz1U74hLlJ9dxaBi3Lb9TwZ+JnyT+hlhbqcjssrbP5EHLi2kxIVVy6tKSpd5PkMdtjvA15V3axCXU7HWSpfke124lzBbpVZ+ej/ZuQmLDo9gmUuZgG3qu35Ql1OxwuydYtsH5IvC+Rb7jnlYUbvxg+pbTbhMVet6JEtdzpcmuLX0iyCJmAZ1tte4B7iXXQCNjLDhCWrQzEe+Fu2XGq0JF965dsy/A+FqfiB8pFqBFxqdFOIUmivHPkFgXohmKcyd/dOIrQj7v24NENmPbAdeBSYC5yga67qthOnetIwX2XIuSUYLv+7K0PG97dbNeyiPO9bONqId/j1GXLO0ZXYAeuAri2qy+uIyzH3E/+fKQwlLM6KgI3ApAzZPEfz2ifJhkueF4prRLyf/Fir3o4gG+63xlWePnphtUiXe8gW0RGAJyXX5SHrjZ0i7fSQLaojnQSkYX2TCiOE7+bVuEMTfYfx+Pnpu49sDDS+IaMtLaOfhZ5A+TGMoUj8CyaTiB/WbnspAAAAAElFTkSuQmCC',
+      blockIconURI: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEtklEQVRoge2ZW4hWVRTHf984Kk1jlj2kI2H2UIwRacVot7EiSLtQBFlPRWUvSQTdsJCCyogy6CWSiMoeqrGioKDJLmpWYxcjxyZSJ4hRuznihZnQRj09rP/unO+b852z9/edT3qYPxz2OXuv9V9rX87Za68DYxhDQ1AqmO9sYAEwDzgDaAMmq20/8BuwDegBuoEfC7Y/CuOAl4HdwAfAyRmy44E7gF4gCrw2A7eLoxpagC758jZwXEhHbqww+FIVuYuBvoTcHuBN4DagA5ghR1p036G2Lsk6vT7goio2llf4cndIR96X0tPAQeCIOpfE/cCI5AaAxUBzgI1m4E7pRuK6t0LmioT9JyT3TYANfpHS6SKPgMPAc8DMBGkErAAmhpBXYCLwbILvcezdekydiICngON1P0TAuz0opTY9P0g8+u76B5uForBYnBE2AxFwFFsVJWACNphHyX6nyrBJRFcm6s4BPiLuyJL6fR+FJQn+dcCFibY5qt8RQuiWzocV9d2qf71WTz3wRhXbq1T/YgjZNOy7HwGPqO4SPR8ATqrH0xxMkY1INgHuwpbUIeDMUMKbpRwBn2BT7b5kjcYK2foUeJcClvMiYG+CaASbrUZjOvZiO7vD2Ke6LpxCvG6/rpcsAN/K5jvAqXnCTR6EfwK/6n5t7X4FY53KrXh8qXw6AvbpBfgipe1qYKeMLfTk89HbUGG7EGzDpnl2StsO4rU8EMCZp3eu2rb6kPnOiAvF93jKF4FBlScWSepinpaUtoXY6A5gZxFf5Om1yObBIE9z4JbAsYa3XZ+ldVp9vhSCun3oAP7ARuXLAL2vdCXPJ83A56oP4YmA34HzA/TK0IntqBEWJrQG6G6R3irsKDAdeE11vQE8rcQhyhDVT5FVMYP4TLKS8CTFfOJBSF7DxIGgL5qwiDcC/sJjl3coYUFiBKzBEhG1YA7wHjYgg9jIpu1DPhiX8OljPAf2Bins5dgEiL5oA/Zhvl3vo7BZwvc10Kla8QDm2/d5gudJcB922P+/oZV4VsqWaeU+cq3K1diL6TAN+A74rEEOpmEtFsonl/cQ8Jbur8tSXoP1NpnDmgn0E395phblaQamJuz1U74hLlJ9dxaBi3Lb9TwZ+JnyT+hlhbqcjssrbP5EHLi2kxIVVy6tKSpd5PkMdtjvA15V3axCXU7HWSpfke124lzBbpVZ+ej/ZuQmLDo9gmUuZgG3qu35Ql1OxwuydYtsH5IvC+Rb7jnlYUbvxg+pbTbhMVet6JEtdzpcmuLX0iyCJmAZ1tte4B7iXXQCNjLDhCWrQzEe+Fu2XGq0JF965dsy/A+FqfiB8pFqBFxqdFOIUmivHPkFgXohmKcyd/dOIrQj7v24NENmPbAdeBSYC5yga67qthOnetIwX2XIuSUYLv+7K0PG97dbNeyiPO9bONqId/j1GXLO0ZXYAeuAri2qy+uIyzH3E/+fKQwlLM6KgI3ApAzZPEfz2ifJhkueF4prRLyf/Fir3o4gG+63xlWePnphtUiXe8gW0RGAJyXX5SHrjZ0i7fSQLaojnQSkYX2TCiOE7+bVuEMTfYfx+Pnpu49sDDS+IaMtLaOfhZ5A+TGMoUj8CyaTiB/WbnspAAAAAElFTkSuQmCC",
 
       // Optional: Link to documentation content for this extension.
       // If not present, offer no link.
-      docsURI: 'https://ccw.site',
+      docsURI: "https://ccw.site",
 
       // Required: the list of blocks implemented by this extension,
       // in the order intended for display.
@@ -36,15 +36,15 @@ class ExampleExtension {
       blocks: [
         {
           //必需：此作的机器可读名称。
-          //这将显示在项目 JSON 中。不得包含 '.' 字符
-          opcode: 'hash', // becomes 'someBlocks.myReporter'
+          //这将显示在项目 JSON 中。不得包含 "." 字符
+          opcode: "hash", // becomes "someBlocks.myReporter"
 
           //必需:我们正在定义的块的类型，来自预定义列表:
-          // 'command' -一个普通的命令块，如“移动{}步”
-          // 'reporter' -返回一个值，如“方向”
-          // 'Boolean' -与' reporter '相同，但返回布尔值
-          // 'hat' -如果值为true，则开始堆栈
-          //'条件'-控制流程，如“如果{}”或“重复{}”
+          // "command" -一个普通的命令块，如“移动{}步”
+          // "reporter" -返回一个值，如“方向”
+          // "Boolean" -与" reporter "相同，但返回布尔值
+          // "hat" -如果值为true，则开始堆栈
+          //"条件"-控制流程，如“如果{}”或“重复{}”
           //条件块可以返回分支的从1开始的索引
           //运行，或者返回零/falsy不运行任何分支。每次
           //子分支完成后，再次调用该块。这只是一个
@@ -69,7 +69,7 @@ class ExampleExtension {
           //必选:该块上的可读文本，包括参数
           //必须是[ENCLOSED_WITHIN_SQUARE_BRACKETS]。
           //占位符。参数占位符应该在[MACRO_CASE]中，并且
-          text: '哈希 [TEXT]',
+          text: "哈希 [ALGORITHM] [TEXT]",
 
           //必需:描述每个参数。
           //注意，这是一个数组:将使用参数的顺序
@@ -83,23 +83,27 @@ class ExampleExtension {
               // 可选:参数的默认值
               defaultValue: "Hello world!"
             },
+            ALGORITHM: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "sha"
+            }
           },
 
           // 可选项:命名实现此块的函数的字符串。
           //如果省略，则使用操作码字符串
-          func: 'hash',
+          func: "hash",
 
           // 可选项:应显示此块的目标类型列表。
           //如果不存在，假设它适用于所有内置目标，即:
-          // ['sprite', 'stage']
-          //filter: ['someBlocks.wedo2', 'sprite', 'stage'],
+          // ["sprite", "stage"]
+          //filter: ["someBlocks.wedo2", "sprite", "stage"],
         },
         {
-          opcode: 'base64Encode',
+          opcode: "base64Encode",
 
           blockType: Scratch.BlockType.REPORTER,
 
-          text: 'base64编码 [TEXT]',
+          text: "base64编码 [TEXT]",
 
           arguments: {
             TEXT: {
@@ -109,14 +113,14 @@ class ExampleExtension {
             },
           },
 
-          func: 'base64Encode',
+          func: "base64Encode",
         },
         {
-          opcode: 'base64Decode',
+          opcode: "base64Decode",
 
           blockType: Scratch.BlockType.REPORTER,
 
-          text: 'base64解码 [TEXT]',
+          text: "base64解码 [TEXT]",
 
           arguments: {
             TEXT: {
@@ -126,14 +130,14 @@ class ExampleExtension {
             },
           },
 
-          func: 'base64Decode',
+          func: "base64Decode",
         },
         {
-          opcode: 'base64IsValid',
+          opcode: "base64IsValid",
 
           blockType: Scratch.BlockType.BOOLEAN,
 
-          text: 'base64是否有效 [TEXT]',
+          text: "base64是否有效 [TEXT]",
 
           arguments: {
             TEXT: {
@@ -143,76 +147,74 @@ class ExampleExtension {
             },
           },
 
-          func: 'isValidBase64',
+          func: "isValidBase64",
         }
       ],
 
       // 可选：在这里定义特定于扩展的菜单
-      /*menus: {
+      menus: {
         // 必需:该菜单的标识符，在该扩展中是唯一的.
-        menuA: [
-          // 静态菜单：列出应该出现在菜单中的项目
-          {
-            // 必选:菜单项被选中时的值。
-            value: 'itemId1',
-
-            // 可选项:此项目的可读标签。
-            //如果没有“value ”,则使用“value”作为文本。
-            text: 'Item One',
-          },
-
-          // 列表项最简单的形式是字符串，它将被用作
-          //值和文本。
-          'itemId2',
-        ],
-
-        // 动态菜单:命名一个函数的字符串，该函数返回一个如上的数组。
-        //每次打开菜单时调用。
-        menuB: 'getItemsForMenuB',
-      },*/
+        sha: {
+          acceptReporters: true,
+          items: [
+            {text: "MD5", value: "md5"},
+            {text: "SHA-1", value: "sha1"},
+            {text: "SHA-224", value: "sha224"},
+            {text: "SHA-256", value: "sha256"},
+            {text: "SHA-384", value: "sha384"},
+            {text: "SHA-512", value: "sha512"},
+            {text: "RIPEMD160", value: "ripemd160"},
+            {text: "SHA3-224", value: "sha3-224"},
+            {text: "SHA3-256", value: "sha3-256"},
+            {text: "SHA3-384", value: "sha3-384"},
+            {text: "SHA3-512", value: "sha3-512"},
+          ]
+        },
+      },
 
       // 可选:翻译
       translation_map: {
-        'zh-cn': {
-          'hashAndEncrypt.name': 'hash and encrypt',
-          'someBlocks.setValue': '设置[KEY]=[VALUE]',
-          'someBlocks.getValue': '获取[KEY]的值',
+        "zh-cn": {
+          "hashAndEncrypt.name": "hash and encrypt",
+          "someBlocks.setValue": "设置[KEY]=[VALUE]",
+          "someBlocks.getValue": "获取[KEY]的值",
         },
         en: {
-          'someBlocks.name': 'CCW Lab',
-          'someBlocks.setValue': 'set[KEY]=[VALUE]',
-          'someBlocks.getValue': 'get[KEY]',
+          "someBlocks.name": "CCW Lab",
+          "someBlocks.setValue": "set[KEY]=[VALUE]",
+          "someBlocks.getValue": "get[KEY]",
         },
       },
     }
   }
 
-  hash(str) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(str);
-    const hashBuffer = crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+  hash(algorithm, str) {
+    const hash = crypto.createHash(algorithm);
+    hash.update(str);
+
+    return hash.digest("hex")
 }
 
   base64Encode(str) {
-    const bytes = new TextEncoder().encode(str);
-    return btoa(String.fromCharCode(...bytes));
+    return Buffer.from(str).toString("base64");
   }
 
   base64Decode(base64str) {
-    if (isValidBase64(base64str)) {
-      const bytes = new Uint8Array(atob(base64str).split('').map(c => c.charCodeAt(0)));
-      return new TextDecoder().decode(bytes);
-    } else {
-      return '错误的base64';
+    try {
+        Buffer.from(base64str, "base64").toString("utf8");
+        return true;
+    } catch (error) {
+        return "错误的base64";
     }
   }
 
   isValidBase64(base64str) {
-    const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-    return base64Regex.test(base64str) && base64str.length % 4 === 0;
+    try {
+      Buffer.from(base64str, "base64").toString("utf8");
+      return true;
+    } catch (error) {
+        return false;
+    }
   }
 }
 
