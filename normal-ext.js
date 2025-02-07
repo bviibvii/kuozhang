@@ -187,9 +187,14 @@ class ExampleExtension {
     }
   }
 
-  hash() {
-
-  }
+  hash(str) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
 
   base64Encode(str) {
     const bytes = new TextEncoder().encode(str);
@@ -197,17 +202,17 @@ class ExampleExtension {
   }
 
   base64Decode(base64str) {
-    if (isValidBase64(baase64str)) {
+    if (isValidBase64(base64str)) {
       const bytes = new Uint8Array(atob(base64str).split('').map(c => c.charCodeAt(0)));
       return new TextDecoder().decode(bytes);
     } else {
-      return '错误的base64'
+      return '错误的base64';
     }
   }
 
   isValidBase64(base64str) {
     const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-    return base64Regex.test(base64str);
+    return base64Regex.test(base64str) && base64str.length % 4 === 0;
   }
 }
 
