@@ -1,4 +1,4 @@
-//ovKy96mPCt6waTKrAto9WDGhos3k
+const crypto = require('crypto');
 class ExampleExtension {
   getInfo() {
     return {
@@ -201,8 +201,7 @@ class ExampleExtension {
 
   base64Decode(base64str) {
     try {
-        Buffer.from(base64str, "base64").toString("utf8");
-        return true;
+        return Buffer.from(base64str, 'base64').toString('utf8');
     } catch (error) {
         return "错误的base64";
     }
@@ -213,7 +212,7 @@ class ExampleExtension {
       Buffer.from(base64str, "base64").toString("utf8");
       return true;
     } catch (error) {
-        return false;
+      return false;
     }
   }
 }
