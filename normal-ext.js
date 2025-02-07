@@ -2,21 +2,21 @@
 class ExampleExtension {
   getInfo() {
     return {
-      // Required: the machine-readable name of this extension.
-      // Will be used as the extension's namespace. Must not contain a '.' character.
-      id: 'someBlocks',
+      // 必选:此扩展的机器可读名称。
+      //将用作扩展的命名空间。不得包含“.”性格。
+      id: 'hashAndEncrypt',
 
-      // Optional: the human-readable name of this extension as string.
-      // This and any other string to be displayed in the Scratch UI may either be
-      // a string or a call to `intlDefineMessage`; a plain string will not be
-      // translated whereas a call to `intlDefineMessage` will connect the string
-      // to the translation map (see below). The `intlDefineMessage` call is
-      // similar to `defineMessages` from `react-intl` in form, but will actually
-      // call some extension support code to do its magic. For example, we will
-      // internally namespace the messages such that two extensions could have
-      // messages with the same ID without colliding.
-      // See also: https://github.com/yahoo/react-intl/wiki/API#definemessages
-      name: 'someBlocks.name',
+      // 可选项:字符串形式的此扩展的可读名称。
+      //字符串或对“intlDefineMessage”的调用；普通字符串不会被
+      //要在临时用户界面中显示的该字符串和任何其他字符串可能是
+      //到翻译图(见下图)。“intlDefineMessage”调用是
+      //已转换，而对“intlDefineMessage”的调用将连接字符串
+      //调用一些扩展支持代码来施展它的魔力。例如，我们将
+      //形式上类似于“react-intl”中的“defineMessages ”,但实际上将
+      //ID相同但没有冲突的消息。
+      //在内部命名消息，这样两个扩展可以有
+      //参见:https://github.com/yahoo/react-intl/wiki/API#definemessages
+      name: '哈希与加密',
       // block color
       color1: '#4D7EB4',
       // Optional: URI for an icon for this extension. Data URI OK.
@@ -35,149 +35,146 @@ class ExampleExtension {
       // Scratch object is pera
       blocks: [
         {
-          opcode: 'example-noop',
-          blockType: Scratch.BlockType.COMMAND,
-          blockAllThreads: false,
-          text: 'do nothing',
-          func: 'noop',
-        },
-        {
-          opcode: 'example-conditional',
-          blockType: Scratch.BlockType.CONDITIONAL,
-          branchCount: 4,
-          isTerminal: true,
-          blockAllThreads: false,
-          text: 'choose [BRANCH]',
-          arguments: {
-            BRANCH: {
-              type: Scratch.ArgumentType.NUMBER,
-              defaultValue: 1,
-            },
-          },
-          func: 'noop',
-        },
-        {
-          // Required: the machine-readable name of this operation.
-          // This will appear in project JSON. Must not contain a '.' character.
-          opcode: 'myReporter', // becomes 'someBlocks.myReporter'
+          //必需：此作的机器可读名称。
+          //这将显示在项目 JSON 中。不得包含 '.' 字符
+          opcode: 'hash', // becomes 'someBlocks.myReporter'
 
-          // Required: the kind of block we're defining, from a predefined list:
-          // 'command' - a normal command block, like "move {} steps"
-          // 'reporter' - returns a value, like "direction"
-          // 'Boolean' - same as 'reporter' but returns a Boolean value
-          // 'hat' - starts a stack if its value is truthy
-          // 'conditional' - control flow, like "if {}" or "repeat {}"
-          // A 'conditional' block may return the one-based index of a branch
-          // to run, or it may return zero/falsy to run no branch. Each time a
-          // child branch finishes, the block is called again. This is only a
-          // slight change to the current model for control flow blocks, and is
-          // also compatible with returning true/false for an "if" or "repeat"
-          // block.
-          // TODO: Consider Blockly-like nextStatement, previousStatement, and
-          // output attributes as an alternative. Those are more flexible, but
-          // allow bad combinations.
+          //必需:我们正在定义的块的类型，来自预定义列表:
+          // 'command' -一个普通的命令块，如“移动{}步”
+          // 'reporter' -返回一个值，如“方向”
+          // 'Boolean' -与' reporter '相同，但返回布尔值
+          // 'hat' -如果值为true，则开始堆栈
+          //'条件'-控制流程，如“如果{}”或“重复{}”
+          //条件块可以返回分支的从1开始的索引
+          //运行，或者返回零/falsy不运行任何分支。每次
+          //子分支完成后，再次调用该块。这只是一个
+          //对控制流块的当前模型稍作更改，并且是
+          //也兼容为“if”或“repeat”返回真/假
+          //块。
+          // TODO:考虑类似块的nextStatement、previousStatement和
+          //输出属性作为替代。那些更灵活，但是
+          //允许错误的组合。
           blockType: Scratch.BlockType.REPORTER,
 
-          // Required for conditional blocks, ignored for others: the number of
-          // child branches this block controls. An "if" or "repeat" block would
-          // specify a branch count of 1; an "if-else" block would specify a
-          // branch count of 2.
-          // TODO: should we support dynamic branch count for "switch"-likes?
-          branchCount: 0,
+          //可选，默认为false:此块是否结束堆栈。
+          //这里的“永久”和“全部停止”块将指定true。
+          isTerminal: false,
 
-          // Optional, default false: whether or not this block ends a stack.
-          // The "forever" and "stop all" blocks would specify true here.
-          isTerminal: true,
-
-          // Optional, default false: whether or not to block all threads while
-          // this block is busy. This is for things like the "touching color"
-          // block in compatibility mode, and is only needed if the VM runs in a
-          // worker. We might even consider omitting it from extension docs...
+          //可选，默认为false:是否在
+          //在兼容模式下阻塞，只有当虚拟机在
+          //此块正忙。这是为了“感人的颜色”之类的东西
+          //工人。我们甚至可以考虑在扩展文档中省略它...
           blockAllThreads: false,
 
-          // Required: the human-readable text on this block, including argument
-          // placeholders. Argument placeholders should be in [MACRO_CASE] and
-          // must be [ENCLOSED_WITHIN_SQUARE_BRACKETS].
-          text: 'letter [LETTER_NUM] of [TEXT]',
+          //必选:该块上的可读文本，包括参数
+          //必须是[ENCLOSED_WITHIN_SQUARE_BRACKETS]。
+          //占位符。参数占位符应该在[MACRO_CASE]中，并且
+          text: '哈希 [TEXT]',
 
-          // Required: describe each argument.
-          // Note that this is an array: the order of arguments will be used
+          //必需:描述每个参数。
+          //注意，这是一个数组:将使用参数的顺序
           arguments: {
-            // Required: the ID of the argument, which will be the name in the
-            // args object passed to the implementation function.
-            LETTER_NUM: {
-              // Required: type of the argument / shape of the block input
-              type: Scratch.ArgumentType.NUMBER,
-
-              // Optional: the default value of the argument
-              defaultValue: 1,
-            },
-
-            // Required: the ID of the argument, which will be the name in the
-            // args object passed to the implementation function.
+            //必选:参数的ID，它将是
+            //传递给实现函数的args对象。
             TEXT: {
-              // Required: type of the argument / shape of the block input
+              // 必需:块输入的参数/形状的类型
               type: Scratch.ArgumentType.STRING,
 
-              // Optional: the default value of the argument
-              defaultValue: 'text',
+              // 可选:参数的默认值
+              defaultValue: "Hello world!"
             },
           },
 
-          // Optional: a string naming the function implementing this block.
-          // If this is omitted, use the opcode string.
-          func: 'myReporter',
+          // 可选项:命名实现此块的函数的字符串。
+          //如果省略，则使用操作码字符串
+          func: 'hash',
 
-          // Optional: list of target types for which this block should appear.
-          // If absent, assume it applies to all builtin targets -- that is:
+          // 可选项:应显示此块的目标类型列表。
+          //如果不存在，假设它适用于所有内置目标，即:
           // ['sprite', 'stage']
-          filter: ['someBlocks.wedo2', 'sprite', 'stage'],
+          //filter: ['someBlocks.wedo2', 'sprite', 'stage'],
         },
         {
-          opcode: 'example-Boolean',
+          opcode: 'base64Encode',
+
+          blockType: Scratch.BlockType.REPORTER,
+
+          text: 'base64编码 [TEXT]',
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: 'base64Encode',
+        },
+        {
+          opcode: 'base64Decode',
+
+          blockType: Scratch.BlockType.REPORTER,
+
+          text: 'base64解码 [TEXT]',
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: 'base64Decode',
+        },
+        {
+          opcode: 'base64IsValid',
+
           blockType: Scratch.BlockType.BOOLEAN,
-          text: 'return true',
-          func: 'returnTrue',
-        },
-        {
-          opcode: 'example-hat',
-          blockType: Scratch.BlockType.HAT,
-          text: 'after forever',
-          func: 'returnFalse',
-        },
-        {
-          // Another block...
-        },
+
+          text: 'base64是否有效 [TEXT]',
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: 'isValidBase64',
+        }
       ],
 
-      // Optional: define extension-specific menus here.
-      menus: {
-        // Required: an identifier for this menu, unique within this extension.
+      // 可选：在这里定义特定于扩展的菜单
+      /*menus: {
+        // 必需:该菜单的标识符，在该扩展中是唯一的.
         menuA: [
-          // Static menu: list items which should appear in the menu.
+          // 静态菜单：列出应该出现在菜单中的项目
           {
-            // Required: the value of the menu item when it is chosen.
+            // 必选:菜单项被选中时的值。
             value: 'itemId1',
 
-            // Optional: the human-readable label for this item.
-            // Use `value` as the text if this is absent.
+            // 可选项:此项目的可读标签。
+            //如果没有“value ”,则使用“value”作为文本。
             text: 'Item One',
           },
 
-          // The simplest form of a list item is a string which will be used as
-          // both value and text.
+          // 列表项最简单的形式是字符串，它将被用作
+          //值和文本。
           'itemId2',
         ],
 
-        // Dynamic menu: a string naming a function which returns an array as above.
-        // Called each time the menu is opened.
+        // 动态菜单:命名一个函数的字符串，该函数返回一个如上的数组。
+        //每次打开菜单时调用。
         menuB: 'getItemsForMenuB',
-      },
+      },*/
 
-      // Optional: translations
+      // 可选:翻译
       translation_map: {
         'zh-cn': {
-          'someBlocks.name': 'CCW Lab',
+          'hashAndEncrypt.name': 'hash and encrypt',
           'someBlocks.setValue': '设置[KEY]=[VALUE]',
           'someBlocks.getValue': '获取[KEY]的值',
         },
@@ -187,20 +184,30 @@ class ExampleExtension {
           'someBlocks.getValue': 'get[KEY]',
         },
       },
-
-      // Optional: list new target type(s) provided by this extension.
-      targetTypes: [
-        'wedo2', // automatically transformed to 'someBlocks.wedo2'
-        'speech', // automatically transformed to 'someBlocks.speech'
-      ],
     }
   }
-  noop () {}
-  returnTrue () {
-    return true
+
+  hash() {
+
   }
-  returnFalse  () {
-    return false
+
+  base64Encode(str) {
+    const bytes = new TextEncoder().encode(str);
+    return btoa(String.fromCharCode(...bytes));
+  }
+
+  base64Decode(base64str) {
+    if (isValidBase64(baase64str)) {
+      const bytes = new Uint8Array(atob(base64str).split('').map(c => c.charCodeAt(0)));
+      return new TextDecoder().decode(bytes);
+    } else {
+      return '错误的base64'
+    }
+  }
+
+  isValidBase64(base64str) {
+    const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+    return base64Regex.test(base64str);
   }
 }
 
