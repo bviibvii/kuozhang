@@ -194,15 +194,20 @@ class ExampleExtension {
     return hash.digest("hex")
 }
 
-  base64Encode(originalString) {
+  base64Encode(args) {
     // 将字符串转换为二进制字符串
-    return originalString;
+    const encoder = new TextEncoder();
+    const uint8Array = encoder.encode(args.TEXT);
+    // 将Uint8Array转换为二进制字符串
+   const binaryString = String.fromCharCode(...uint8Array);
+    // Base64编码
+    return window.btoa(binaryString);
   }
 
-  base64Decode(base64str) {
+  base64Decode(args) {
     try {
       // Base64字符串解码为二进制字符串
-      const binaryString = window.atob(base64str);
+      const binaryString = window.atob(args.TEXT);
       // 二进制字符串转换为普通字符串
       const decoder = new TextDecoder();
       const uint8Array = new Uint8Array(binaryString.length);
@@ -215,9 +220,9 @@ class ExampleExtension {
     }
   }
 
-  isValidBase64(base64str) {
+  isValidBase64(args) {
     try {
-      base64Decode(base64str);
+      base64Decode(args.TEXT);
       return true;
     } catch (error) {
       return false;
