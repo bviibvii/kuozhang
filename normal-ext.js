@@ -195,12 +195,12 @@ class ExampleExtension {
 }
 
   base64Encode(str) {
-    return Buffer.from(str).toString("base64");
+    return window.btoa(unescape(encodeURIComponent(str)));
   }
 
   base64Decode(base64str) {
     try {
-        return Buffer.from(base64str, 'base64').toString('utf8');
+        return decodeURIComponent(escape(window.atob(base64str)));
     } catch (error) {
         return "错误的base64";
     }
@@ -208,7 +208,7 @@ class ExampleExtension {
 
   isValidBase64(base64str) {
     try {
-      Buffer.from(base64str, "base64").toString("utf8");
+      decodeURIComponent(escape(window.atob(base64str)));
       return true;
     } catch (error) {
       return false;
