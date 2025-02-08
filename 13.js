@@ -87,7 +87,7 @@ class HashAndEncrypt {
         {
           opcode: "MD5",
 
-          blockType: Scratch.BlockType.STRING,
+          blockType: Scratch.BlockType.REPORTER,
 
           text: "MD5 [TEXT]",
 
