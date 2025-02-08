@@ -1,4 +1,4 @@
-class ExampleExtension {
+class HashAndEncrypt {
   getInfo() {
     return {
       // 必选:此扩展的机器可读名称。
@@ -61,7 +61,7 @@ class ExampleExtension {
             TEXT: {
               type: Scratch.ArgumentType.STRING,
 
-              defaultValue: "Hello world!"
+              defaultValue: "SGVsbG8gd29ybGQh"
             },
           },
 
@@ -83,6 +83,23 @@ class ExampleExtension {
           },
 
           func: "isValidBase64",
+        },
+        {
+          opcode: "MD5",
+
+          blockType: Scratch.BlockType.STRING,
+
+          text: "MD5 [TEXT]",
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: "md5",
         }
       ],
 
@@ -130,13 +147,17 @@ class ExampleExtension {
 
   isValidBase64(args) {
     try {
-      base64Decode(args.TEXT.toString());
+      base64Decode(args);
       return true;
     } catch (error) {
       return false;
     }
   }
+
+  md5(args) {
+    return CryptoJS.MD5(args.TEXT.toString()).toString()
+  }
 }
 
 /** dont forget register your extension to Scratch */
-Scratch.extensions.register(new ExampleExtension())
+Scratch.extensions.register(new HashAndEncrypt())
