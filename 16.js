@@ -1,129 +1,3 @@
-class Hash {
-  constructor() {}
-
-  static md5(input) {
-    function F(x, y, z) {
-      return (x & y) | (~x & z);
-    }
-    function G(x, y, z) {
-      return (x & z) | (y & ~z);
-    }
-    function H(x, y, z) {
-      return x ^ y ^ z;
-    }
-    function I(x, y, z) {
-      return y ^ (x | ~z);
-    }
-
-    function rotateLeft(value, bits) {
-      return (value << bits) | (value >>> (32 - bits));
-    }
-
-    function add32(a, b) {
-      return (a + b) & 0xFFFFFFFF;
-    }
-
-    function finalize(buffer) {
-      let hex = '';
-      for (const value of Object.values(buffer)) {
-        hex += value.toString(16).padStart(8, '0');
-      }
-      return hex;
-    }
-
-    function padding(input) {
-      const inputBytes = new Uint8Array(input.length);
-      for (let i = 0; i < input.length; i++) {
-        inputBytes[i] = input.charCodeAt(i);
-      }
-      let inputLength = inputBytes.length * 8;
-      let paddedInput = new Uint8Array(inputLength + 1 + 64);
-      paddedInput.set(inputBytes);
-      paddedInput[inputLength] = 0x80;
-
-      while (paddedInput.length % 64 !== 56) {
-        paddedInput = new Uint8Array(paddedInput.length + 1);
-        paddedInput.set(paddedInput.subarray(0, paddedInput.length - 1));
-        paddedInput[paddedInput.length - 1] = 0;
-      }
-
-      const lengthBytes = new Uint32Array(2);
-      lengthBytes[0] = (inputLength >>> 32) & 0xFFFFFFFF;
-      lengthBytes[1] = inputLength & 0xFFFFFFFF;
-      paddedInput.set(lengthBytes, paddedInput.length - 8);
-
-      return paddedInput;
-    }
-
-    function initializeBuffer() {
-      return {
-        a: 0x67452301,
-        b: 0xEFCDAB89,
-        c: 0x98BADCFE,
-        d: 0x10325476
-      };
-    }
-
-    function initializeBlocks(paddedInput) {
-      const blocks = [];
-      for (let i = 0; i < paddedInput.length; i += 64) {
-        const block = [];
-        for (let j = 0; j < 64; j++) {
-          block.push(paddedInput[i + j]);
-        }
-        blocks.push(block);
-      }
-      return blocks;
-    }
-
-    function mainLoop(blocks) {
-      const buffer = initializeBuffer();
-      for (let i = 0; i < blocks.length; i++) {
-        let block = blocks[i];
-        let a = buffer.a;
-        let b = buffer.b;
-        let c = buffer.c;
-        let d = buffer.d;
-        let f, k, s, t;
-
-        for (let j = 0; j < 64; j++) {
-          if (j < 16) {
-            f = F(b, c, d);
-            k = j;
-          } else if (j < 32) {
-            f = G(b, c, d);
-            k = (5 * j + 1) % 16;
-          } else if (j < 48) {
-            f = H(b, c, d);
-            k = (3 * j + 5) % 16;
-          } else {
-            f = I(b, c, d);
-            k = (7 * j) % 16;
-          }
-
-          t = add32(add32(add32(a, f), block[k]), (j < 16 ? j : (j < 32 ? (j - 16) * 2 : (j - 32) * 3)));
-          a = d;
-          d = c;
-          c = rotateLeft(b, s = (j < 16 ? 7 : (j < 32 ? 12 : (j < 48 ? 17 : 22))), t);
-          b = add32(b, t);
-        }
-
-        buffer.a = add32(buffer.a, a);
-        buffer.b = add32(buffer.b, b);
-        buffer.c = add32(buffer.c, c);
-        buffer.d = add32(buffer.d, d);
-      }
-      return buffer;
-    }
-
-    const paddedInput = padding(input);
-    const blocks = initializeBlocks(paddedInput);
-    const digest = mainLoop(blocks);
-    return finalize(digest);
-  }
-}
-
-
 class HashAndEncrypt {
   getInfo() {
     return {
@@ -281,8 +155,116 @@ class HashAndEncrypt {
   }
 
   md5(args) {
-    return Hash.md5(MD5(args.TEXT.toString()));
+    return md5_string(args.TEXT.toString())
   }
+
+  //----------内置函数----------
+
+  stringToBinary(str) {
+    //转换为二进制,但返回的是String
+    let binaryString = '';
+    for (let i = 0; i < str.length; i++) {
+        // 获取字符的 Unicode 编码值
+        const charCode = str.charCodeAt(i);
+        // 将编码值转换为二进制字符串，并确保每个字符的二进表示制为 8 位
+        const binaryChar = charCode.toString(2).padStart(8, '0');
+        binaryString += binaryChar;
+    }
+    return binaryString;
+  }
+
+  md5_string(originalText) {
+    //转换为二进制
+    stringBit = stringToBinary(originalText);
+    originalBitLength = stringBit.length
+
+    // 填充文本
+    if (stringBit.length % 512 != 448) {
+      stringBit = stringBit + "1";
+      if (stringBit.length % 512 < 448) {
+        stringBit = stringBit.padEnd(448 - stringBit.length % 512, "0");
+      } else if (stringBit.length % 512 > 448) {
+        stringBit = stringBit.padEnd(960 - stringBit.length % 512, "0");
+      }
+    }
+    stringBit = stringBit + originalBitLength.toString(2);
+
+    const numberOfCycles = stringBit.length / 512;
+    //划分stringBit
+    result = [];
+    for (let i = 0; i < stringBit.length; i += 512) {
+      result1 = []
+      for (let i = 0; i < stringBit.substring(i, i + length).length; i += 32) {
+        result1.push(parseInt(parseInt(stringBit.substring(i, i + length).substring(i, i + length), 2).toString(16), 16));
+      }
+      result.push(result1);
+    }
+
+    return finalize(md5MainLoop(result));
+  }
+
+  initializeBuffer() { //标准幻数
+    return {
+        a: 0x67452301,
+        b: 0xEFCDAB89,
+        c: 0x98BADCFE,
+        d: 0x10325476
+    };
+  }
+
+  md5MainLoop(blocks) {
+    const buffer = initializeBuffer();
+    const T = []; // 常量表
+    for (let i = 0; i < 64; i++) {
+      T[i] = Math.abs(Math.sin(i + 1)) * 0x100000000; // 32-bit unsigned integer
+    }
+
+    const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
+
+    for (let i = 0; i < blocks.length; i++) {
+      let block = blocks[i];
+      let a = buffer.a;
+      let b = buffer.b;
+      let c = buffer.c;
+      let d = buffer.d;
+
+      for (let j = 0; j < 64; j++) {
+        let f, g;
+        if (j < 16) {
+          f = F(b, c, d);
+          g = j;
+          } else if (j < 32) {
+            f = G(b, c, d);
+            g = (5 * j + 1) % 16;
+          } else if (j < 48) {
+            f = H(b, c, d);
+            g = (3 * j + 5) % 16;
+          } else {
+            f = I(b, c, d);
+            g = (7 * j) % 16;
+          }
+
+          let temp = d;
+          d = c;
+          c = b;
+          b = b + rotateLeft(a + f + T[j] + block[g], shifts[j % 16]);
+          a = temp;
+        }
+
+      buffer.a += a;
+      buffer.b += b;
+      buffer.c += c;
+      buffer.d += d;
+    }
+
+    return buffer;
+  }
+
+  F(x, y, z) { return (x & y) | (~x & z); }
+  G(x, y, z) { return (x & z) | (y & ~z); }
+  H(x, y, z) { return (x ^ y ^ z); }
+  I(x, y, z) { return (y ^ (x | ~z)); }
+  rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
 }
 
 /** dont forget register your extension to Scratch */
