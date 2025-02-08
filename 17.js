@@ -193,11 +193,12 @@ class HashAndEncrypt {
     //划分stringBit
     result = [];
     for (let i = 0; i < stringBit.length; i += 512) {
-      result1 = []
-      for (let i = 0; i < stringBit.substring(i, i + length).length; i += 32) {
-        result1.push(parseInt(parseInt(stringBit.substring(i, i + length).substring(i, i + length), 2).toString(16), 16));
-      }
-      result.push(result1);
+        block = stringBit.substring(i, i + 512);
+        blockArray = [];
+        for (let j = 0; j < 512; j += 32) {
+            blockArray.push(parseInt(block.substring(j, j + 32), 2));
+        }
+        result.push(blockArray);
     }
 
     return finalize(md5MainLoop(result));
@@ -256,8 +257,11 @@ class HashAndEncrypt {
       buffer.c += c;
       buffer.d += d;
     }
-
-    return buffer;
+    hex = '';
+    for (const value of Object.values(buffer)) {
+        hex += value.toString(16).padStart(8, '0');
+    }
+    return hex;
   }
 
   F(x, y, z) { return (x & y) | (~x & z); }
