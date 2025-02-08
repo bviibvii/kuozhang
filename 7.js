@@ -35,57 +35,6 @@ class ExampleExtension {
       // Scratch object is pera
       blocks: [
         {
-          //必需：此作的机器可读名称。
-          //这将显示在项目 JSON 中。不得包含 "." 字符
-          opcode: "hash", // becomes "someBlocks.myReporter"
-
-          //必需:我们正在定义的块的类型，来自预定义列表:
-          // "command" -一个普通的命令块，如“移动{}步”
-          // "reporter" -返回一个值，如“方向”
-          // "Boolean" -与" reporter "相同，但返回布尔值
-          // "hat" -如果值为true，则开始堆栈
-          //"条件"-控制流程，如“如果{}”或“重复{}”
-          //条件块可以返回分支的从1开始的索引
-          //运行，或者返回零/falsy不运行任何分支。每次
-          //子分支完成后，再次调用该块。这只是一个
-          //对控制流块的当前模型稍作更改，并且是
-          //也兼容为“if”或“repeat”返回真/假
-          //块。
-          // TODO:考虑类似块的nextStatement、previousStatement和
-          //输出属性作为替代。那些更灵活，但是
-          //允许错误的组合。
-          blockType: Scratch.BlockType.REPORTER,
-
-          //可选，默认为false:此块是否结束堆栈。
-          //这里的“永久”和“全部停止”块将指定true。
-          isTerminal: false,
-
-          //可选，默认为false:是否在
-          //在兼容模式下阻塞，只有当虚拟机在
-          //此块正忙。这是为了“感人的颜色”之类的东西
-          //工人。我们甚至可以考虑在扩展文档中省略它...
-          blockAllThreads: false,
-
-          //必选:该块上的可读文本，包括参数
-          //必须是[ENCLOSED_WITHIN_SQUARE_BRACKETS]。
-          //占位符。参数占位符应该在[MACRO_CASE]中，并且
-          text: "哈希",
-
-          //必需:描述每个参数。
-          //注意，这是一个数组:将使用参数的顺序
-          arguments: {
-          },
-
-          // 可选项:命名实现此块的函数的字符串。
-          //如果省略，则使用操作码字符串
-          func: "hash",
-
-          // 可选项:应显示此块的目标类型列表。
-          //如果不存在，假设它适用于所有内置目标，即:
-          // ["sprite", "stage"]
-          //filter: ["someBlocks.wedo2", "sprite", "stage"],
-        },
-        {
           opcode: "base64Encode",
 
           blockType: Scratch.BlockType.REPORTER,
@@ -153,9 +102,6 @@ class ExampleExtension {
       },
     }
   }
-
-  hash(algorithm, str) {
-}
 
   base64Encode(args) {
     // 将字符串转换为二进制字符串
