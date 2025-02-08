@@ -69,24 +69,11 @@ class ExampleExtension {
           //必选:该块上的可读文本，包括参数
           //必须是[ENCLOSED_WITHIN_SQUARE_BRACKETS]。
           //占位符。参数占位符应该在[MACRO_CASE]中，并且
-          text: "哈希 [ALGORITHM] [TEXT]",
+          text: "哈希",
 
           //必需:描述每个参数。
           //注意，这是一个数组:将使用参数的顺序
           arguments: {
-            //必选:参数的ID，它将是
-            //传递给实现函数的args对象。
-            TEXT: {
-              // 必需:块输入的参数/形状的类型
-              type: Scratch.ArgumentType.STRING,
-
-              // 可选:参数的默认值
-              defaultValue: "Hello world!"
-            },
-            ALGORITHM: {
-              type: Scratch.ArgumentType.STRING,
-              menu: "sha"
-            }
           },
 
           // 可选项:命名实现此块的函数的字符串。
@@ -151,27 +138,6 @@ class ExampleExtension {
         }
       ],
 
-      // 可选：在这里定义特定于扩展的菜单
-      menus: {
-        // 必需:该菜单的标识符，在该扩展中是唯一的.
-        sha: {
-          acceptReporters: true,
-          items: [
-            {text: "MD5", value: "md5"},
-            {text: "SHA-1", value: "sha1"},
-            {text: "SHA-224", value: "sha224"},
-            {text: "SHA-256", value: "sha256"},
-            {text: "SHA-384", value: "sha384"},
-            {text: "SHA-512", value: "sha512"},
-            {text: "RIPEMD160", value: "ripemd160"},
-            {text: "SHA3-224", value: "sha3-224"},
-            {text: "SHA3-256", value: "sha3-256"},
-            {text: "SHA3-384", value: "sha3-384"},
-            {text: "SHA3-512", value: "sha3-512"},
-          ]
-        },
-      },
-
       // 可选:翻译
       translation_map: {
         "zh-cn": {
@@ -189,10 +155,6 @@ class ExampleExtension {
   }
 
   hash(algorithm, str) {
-    const hash = crypto.createHash(algorithm);
-    hash.update(str);
-
-    return hash.digest("hex")
 }
 
   base64Encode(args) {
