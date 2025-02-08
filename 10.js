@@ -1,4 +1,3 @@
-import Cast from '../utils/cast.js'
 class ExampleExtension {
   getInfo() {
     return {
