@@ -104,38 +104,38 @@ class ExampleExtension {
   }
 
   base64Encode(args) {
-    // 将字符串转换为二进制字符串
-    const encoder = new TextEncoder();
-    const uint8Array = encoder.encode(Cast.toString(args.TEXT));
-    // 将Uint8Array转换为二进制字符串
-    const binaryString = String.fromCharCode(...uint8Array);
-    // Base64编码
-    return window.btoa(binaryString);
+    // // 将字符串转换为二进制字符串
+    // const encoder = new TextEncoder();
+    // const uint8Array = encoder.encode(Cast.toString(args.TEXT));
+    // // 将Uint8Array转换为二进制字符串
+    // const binaryString = String.fromCharCode(...uint8Array);
+    // // Base64编码
+    // return window.btoa(binaryString);
   }
 
   base64Decode(args) {
-    try {
-      // Base64字符串解码为二进制字符串
-      const binaryString = window.atob(Cast.toString(args.TEXT));
-      // 二进制字符串转换为普通字符串
-      const decoder = new TextDecoder();
-      const uint8Array = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        uint8Array[i] = binaryString.charCodeAt(i);
-      }
-      return decoder.decode(uint8Array);
-    } catch (error) {
-      return "错误的base64";
-    }
+    // try {
+    //   // Base64字符串解码为二进制字符串
+    //   const binaryString = window.atob(Cast.toString(args.TEXT));
+    //   // 二进制字符串转换为普通字符串
+    //   const decoder = new TextDecoder();
+    //   const uint8Array = new Uint8Array(binaryString.length);
+    //   for (let i = 0; i < binaryString.length; i++) {
+    //     uint8Array[i] = binaryString.charCodeAt(i);
+    //   }
+    //   return decoder.decode(uint8Array);
+    // } catch (error) {
+    //   return "错误的base64";
+    // }
   }
 
   isValidBase64(args) {
-    try {
-      base64Decode(Cast.toString(args.TEXT));
-      return true;
-    } catch (error) {
-      return false;
-    }
+    // try {
+    //   base64Decode(Cast.toString(args.TEXT));
+    //   return true;
+    // } catch (error) {
+    //   return false;
+    // }
   }
 }
 
