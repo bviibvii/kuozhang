@@ -56,8 +56,7 @@ class Hash {
 
     const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
 
-    for (let i = 0; i < blocks.length; i++) {
-      let block = blocks[i];
+    for (let i = 0; i < blocks.length; i += 16) {
       let a = buffer.a;
       let b = buffer.b;
       let c = buffer.c;
@@ -82,7 +81,7 @@ class Hash {
         let temp = d;
         d = c;
         c = b;
-        b = b + this.rotateLeft(a + f + T[j] + block[g], shifts[j % 16]);
+        b = b + this.rotateLeft(a + f + T[j] + blocks[i + g], shifts[j % 16]);
         a = temp;
       }
 
@@ -128,24 +127,9 @@ class Hash {
 class HashAndEncrypt {
   getInfo() {
     return {
-      // 必选:此扩展的机器可读名称。
-      //将用作扩展的命名空间。不得包含“.”性格。
       id: "hashAndEncrypt",
-
-      // 可选项:字符串形式的此扩展的可读名称。
-      //字符串或对“intlDefineMessage”的调用；普通字符串不会被
-      //要在临时用户界面中显示的该字符串和任何其他字符串可能是
-      //到翻译图(见下图)。“intlDefineMessage”调用是
-      //已转换，而对“intlDefineMessage”的调用将连接字符串
-      //调用一些扩展支持代码来施展它的魔力。例如，我们将
-      //形式上类似于“react-intl”中的“defineMessages ”,但实际上将
-      //ID相同但没有冲突的消息。
-      //在内部命名消息，这样两个扩展可以有
-      //参见:https://github.com/yahoo/react-intl/wiki/API#definemessages
       name: "哈希与加密",
-      // block color
       color1: "#4D7EB4",
-      // Optional: URI for an icon for this extension. Data URI OK.
       menuIconURI:
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DE" +
         "UIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==",
@@ -227,6 +211,23 @@ class HashAndEncrypt {
           },
 
           func: "md5",
+        },
+        {
+          opcode: "test",
+
+          blockType: Scratch.BlockType.REPORTER,
+
+          text: "test [TEXT]",
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: "sha256",
         }
       ],
 
@@ -284,6 +285,16 @@ class HashAndEncrypt {
   md5(args) {
     const hash = new Hash();
     return hash.md5(args.TEXT.toString());
+  }
+
+  // 实现SHA-256哈希计算
+  async sha256(args) {
+    const message = args.TEXT.toString();
+    const msgBuffer = new TextEncoder().encode(message); // 将字符串编码为UTF-8字节数组
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer); // 计算哈希值
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); // 转换为十六进制字符串
+    return hashHex;
   }
 }
 
