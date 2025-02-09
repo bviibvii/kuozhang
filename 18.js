@@ -200,6 +200,7 @@ class HashAndEncrypt {
         }
         result.push(blockArray);
     }
+    return result.toString();
 
     return finalize(md5MainLoop(result));
   }
