@@ -1,116 +1,93 @@
 class Hash {
-  // 将字符串转换为二进制字符串
-  stringToBinary(str) {
-    let binaryString = '';
-    for (let i = 0; i < str.length; i++) {
-      const charCode = str.charCodeAt(i);
-      const binaryChar = charCode.toString(2).padStart(8, '0');
-      binaryString += binaryChar;
-    }
-    return binaryString;
-  }
-
-  // 初始化 MD5 缓冲区
-  initializeBuffer() {
-    return {
-      a: 0x67452301,
-      b: 0xEFCDAB89,
-      c: 0x98BADCFE,
-      d: 0x10325476
-    };
-  }
-
-  // MD5 主循环
-  md5MainLoop(blocks) {
-    const buffer = this.initializeBuffer();
-    const T = []; // 常量表
-    for (let i = 0; i < 64; i++) {
-      T[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 0x100000000); // 32-bit unsigned integer
+    constructor() {
+        // 初始化MD5的四个常量
+        this.A = 0x67452301;
+        this.B = 0xefcdab89;
+        this.C = 0x98badcfe;
+        this.D = 0x10325476;
     }
 
-    const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
+    // 左旋转函数
+    rotateLeft(x, n) {
+        return (x << n) | (x >>> (32 - n));
+    }
 
-    for (let i = 0; i < blocks.length; i++) {
-      let block = blocks[i];
-      let a = buffer.a;
-      let b = buffer.b;
-      let c = buffer.c;
-      let d = buffer.d;
+    // MD5的四个基本操作函数
+    F(x, y, z) {
+        return (x & y) | (~x & z);
+    }
 
-      for (let j = 0; j < 64; j++) {
-        let f, g;
-        if (j < 16) {
-          f = this.F(b, c, d);
-          g = j;
-        } else if (j < 32) {
-          f = this.G(b, c, d);
-          g = (5 * j + 1) % 16;
-        } else if (j < 48) {
-          f = this.H(b, c, d);
-          g = (3 * j + 5) % 16;
-        } else {
-          f = this.I(b, c, d);
-          g = (7 * j) % 16;
+    G(x, y, z) {
+        return (x & z) | (y & ~z);
+    }
+
+    H(x, y, z) {
+        return x ^ y ^ z;
+    }
+
+    I(x, y, z) {
+        return y ^ (x | ~z);
+    }
+
+    // MD5主函数
+    md5(input) {
+        // 将输入字符串转换为字节数组
+        let message = [];
+        for (let i = 0; i < input.length; i++) {
+            message[i >> 2] |= input.charCodeAt(i) << ((i % 4) * 8);
         }
 
-        let temp = d;
-        d = c;
-        c = b;
-        b = b + this.rotateLeft(a + f + T[j] + block[g], shifts[j % 16]);
-        a = temp;
-      }
+        // 添加填充
+        message.push(0x80);
+        while ((message.length * 4) % 64 !== 56) {
+            message.push(0);
+        }
+        message.push((input.length * 8) / 2 ** 32);
+        message.push((input.length * 8) % 2 ** 32);
 
-      buffer.a = (buffer.a + a) & 0xFFFFFFFF;
-      buffer.b = (buffer.b + b) & 0xFFFFFFFF;
-      buffer.c = (buffer.c + c) & 0xFFFFFFFF;
-      buffer.d = (buffer.d + d) & 0xFFFFFFFF;
+        // 初始化缓冲区
+        let a = this.A;
+        let b = this.B;
+        let c = this.C;
+        let d = this.D;
+
+        // 主循环
+        for (let i = 0; i < message.length; i += 16) {
+            let olda = a;
+            let oldb = b;
+            let oldc = c;
+            let oldd = d;
+
+            for (let j = 0; j < 64; j++) {
+                let t;
+                if (j < 16) {
+                    t = this.F(b, c, d) + message[i + j];
+                } else if (j < 32) {
+                    t = this.G(b, c, d) + message[i + ((5 * j + 1) % 16)];
+                } else if (j < 48) {
+                    t = this.H(b, c, d) + message[i + ((3 * j + 5) % 16)];
+                } else {
+                    t = this.I(b, c, d) + message[i + ((7 * j) % 16)];
+                }
+                t += this.T[j];
+                t = this.rotateLeft(t, this.S[j]);
+                t += a;
+                a = d;
+                d = c;
+                c = b;
+                b = t;
+            }
+
+            a += olda;
+            b += oldb;
+            c += oldc;
+            d += oldd;
+        }
+
+        // 输出结果
+        let result = [a, b, c, d].map(v => v.toString(16).padStart(8, '0')).join('');
+        return result;
     }
-
-    return this.toHex(buffer);
-  }
-
-  // 辅助函数
-  F(x, y, z) { return (x & y) | (~x & z); }
-  G(x, y, z) { return (x & z) | (y & ~z); }
-  H(x, y, z) { return (x ^ y ^ z); }
-  I(x, y, z) { return (y ^ (x | ~z)); }
-  rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
-  toHex(buffer) {
-    return [
-      buffer.a.toString(16).padStart(8, '0'),
-      buffer.b.toString(16).padStart(8, '0'),
-      buffer.c.toString(16).padStart(8, '0'),
-      buffer.d.toString(16).padStart(8, '0')
-    ].join('');
-  }
-
-  // 计算 MD5 哈希值
-  md5(originalText) {
-    // 转换为二进制
-    const stringBit = this.stringToBinary(originalText);
-    const originalBitLength = stringBit.length;
-
-    // 填充文本
-    let paddedStringBit = stringBit + '1';
-    while (paddedStringBit.length % 512 !== 448) {
-      paddedStringBit += '0';
-    }
-    paddedStringBit += originalBitLength.toString(2).padStart(64, '0');
-
-    // 划分字符串
-    const blocks = [];
-    for (let i = 0; i < paddedStringBit.length; i += 512) {
-      const block = paddedStringBit.substring(i, i + 512);
-      const blockArray = [];
-      for (let j = 0; j < 512; j += 32) {
-        blockArray.push(parseInt(block.substring(j, j + 32), 2));
-      }
-      blocks.push(blockArray);
-    }
-
-    // 执行主循环
-    return this.md5MainLoop(blocks);
-  }
 }
 
 class HashAndEncrypt {
