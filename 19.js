@@ -187,6 +187,7 @@ class HashAndEncrypt {
         stringBit = stringBit.padEnd(960 - stringBit.length % 512, "0");
       }
     }
+    return stringBit;
     stringBit = stringBit + originalBitLength.toString(2);
 
     const numberOfCycles = stringBit.length / 512;
@@ -200,7 +201,6 @@ class HashAndEncrypt {
         }
         result.push(blockArray);
     }
-    return result.toString();
 
     return finalize(md5MainLoop(result));
   }
