@@ -126,7 +126,7 @@ class Hash {
 
   hash(message, method="SHA-256") {
     if (method == "SHA-224") {
-      return this.sha(message, "SHA-224").slice(0, 56); //截取前224位
+      return this.sha(message, "SHA-256").slice(0, 56); //截取前224位
     }
     return this.sha(message, method);
   }
