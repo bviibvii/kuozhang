@@ -1,13 +1,6 @@
 const script = document.createElement('script');
 script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
 document.head.appendChild(script);
-script.onload = function () {
-  console.log("CryptoJS 加载完成，可以使用了！");
-  console.log(CryptoJS);
-};
-script.onerror = function () {
-    console.error("CryptoJS 加载失败，请检查网络或 CDN 地址是否正确！");
-};
 
 class Hash {
   // 初始化 MD5 缓冲区
