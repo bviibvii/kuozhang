@@ -1,3 +1,4 @@
+
 class Hash {
   // 初始化 MD5 缓冲区
   initializeBuffer() {
@@ -123,7 +124,14 @@ class Hash {
     return this.md5MainLoop(blocks);
   }
 
-  async hash(message, method="SHA-256") {
+  hash(message, method="SHA-256") {
+    if (method == "SHA-224") {
+      return this.sha(message, "SHA-224").slice(0, 56); //截取前224位
+    }
+    return this.sha(message, method);
+  }
+
+  async sha(message, method="SHA-256") {
     const msgBuffer = new TextEncoder().encode(message); // 将字符串编码为UTF-8字节数组
     const hashBuffer = await crypto.subtle.digest(method, msgBuffer); // 计算哈希值
     const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
@@ -230,8 +238,10 @@ class HashAndEncrypt {
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.OPTION,
+              acceptReporters: true,
               menu: "HashMethod"
             },
+
             TEXT: {
               type: Scratch.ArgumentType.STRING,
 
@@ -252,10 +262,6 @@ class HashAndEncrypt {
             {text: "SHA-256", value: "SHA-256"},
             {text: "SHA-384", value: "SHA-384"},
             {text: "SHA-512", value: "SHA-512"},
-            {text: "SHA3-224", value: "SHA-3-224"},
-            {text: "SHA3-256", value: "SHA-3-256"},
-            {text: "SHA3-384", value: "SHA-3-384"},
-            {text: "SHA3-512", value: "SHA-3-512"}
           ]
         }
       },
