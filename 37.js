@@ -126,17 +126,28 @@ class Hash {
 
   hash(message, method="SHA-256") {
     if (method == "SHA-224") {
-      return this.sha(message, "SHA-256").slice(0, 56); //截取前224位
+      return this.SHA224(message); //截取前224位
     }
-    return this.sha(message, method);
+    return this.SHA(message, method);
   }
 
-  async sha(message, method="SHA-256") {
+  async SHA(message, method="SHA-256") {
     const msgBuffer = new TextEncoder().encode(message); // 将字符串编码为UTF-8字节数组
     const hashBuffer = await crypto.subtle.digest(method, msgBuffer); // 计算哈希值
     const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); // 转换为十六进制字符串
     return hashHex;
+  }
+
+  async SHA224(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = new Uint8Array(hashBuffer);
+    const truncatedHashArray = hashArray.slice(0, 28); // 截取前28字节
+    const truncatedHashHex = Array.from(truncatedHashArray)
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+    return truncatedHashHex;
   }
 }
 
