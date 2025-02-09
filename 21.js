@@ -155,7 +155,7 @@ class HashAndEncrypt {
   }
 
   md5(args) {
-    return md5_string(args.TEXT.toString())
+    return this.md5_string(args.TEXT.toString())
   }
 
   //----------内置函数----------
@@ -175,7 +175,6 @@ class HashAndEncrypt {
 
   md5_string(originalText) {
     //转换为二进制
-    return "hello";
     stringBit = stringToBinary(originalText);
     originalBitLength = stringBit.length
 
@@ -194,47 +193,46 @@ class HashAndEncrypt {
     //划分stringBit
     result = [];
     for (let i = 0; i < stringBit.length; i += 512) {
-        block = stringBit.substring(i, i + 512);
-        blockArray = [];
-        for (let j = 0; j < 512; j += 32) {
-            blockArray.push(parseInt(block.substring(j, j + 32), 2));
-        }
-        result.push(blockArray);
+      block = stringBit.substring(i, i + 512);
+      blockArray = [];
+      for (let j = 0; j < 512; j += 32) {
+        blockArray.push(parseInt(block.substring(j, j + 32), 2));
+      }
+      result.push(blockArray);
     }
 
     return finalize(md5MainLoop(result));
-  }
 
-  initializeBuffer() { //标准幻数
-    return {
+    function initializeBuffer() { //标准幻数
+      return {
         a: 0x67452301,
         b: 0xEFCDAB89,
         c: 0x98BADCFE,
         d: 0x10325476
-    };
-  }
-
-  md5MainLoop(blocks) {
-    const buffer = initializeBuffer();
-    const T = []; // 常量表
-    for (let i = 0; i < 64; i++) {
-      T[i] = Math.abs(Math.sin(i + 1)) * 0x100000000; // 32-bit unsigned integer
+      };
     }
 
-    const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
+    function md5MainLoop(blocks) {
+      const buffer = initializeBuffer();
+      const T = []; // 常量表
+      for (let i = 0; i < 64; i++) {
+        T[i] = Math.abs(Math.sin(i + 1)) * 0x100000000; // 32-bit unsigned integer
+      }
 
-    for (let i = 0; i < blocks.length; i++) {
-      let block = blocks[i];
-      let a = buffer.a;
-      let b = buffer.b;
-      let c = buffer.c;
-      let d = buffer.d;
+      const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
 
-      for (let j = 0; j < 64; j++) {
-        let f, g;
-        if (j < 16) {
-          f = F(b, c, d);
-          g = j;
+      for (let i = 0; i < blocks.length; i++) {
+        let block = blocks[i];
+        let a = buffer.a;
+        let b = buffer.b;
+        let c = buffer.c;
+        let d = buffer.d;
+
+        for (let j = 0; j < 64; j++) {
+          let f, g;
+          if (j < 16) {
+            f = F(b, c, d);
+            g = j;
           } else if (j < 32) {
             f = G(b, c, d);
             g = (5 * j + 1) % 16;
@@ -253,23 +251,24 @@ class HashAndEncrypt {
           a = temp;
         }
 
-      buffer.a += a;
-      buffer.b += b;
-      buffer.c += c;
-      buffer.d += d;
-    }
-    hex = '';
-    for (const value of Object.values(buffer)) {
+        buffer.a += a;
+        buffer.b += b;
+        buffer.c += c;
+        buffer.d += d;
+      }
+      hex = '';
+      for (const value of Object.values(buffer)) {
         hex += value.toString(16).padStart(8, '0');
+      }
+      return hex;
     }
-    return hex;
-  }
 
-  F(x, y, z) { return (x & y) | (~x & z); }
-  G(x, y, z) { return (x & z) | (y & ~z); }
-  H(x, y, z) { return (x ^ y ^ z); }
-  I(x, y, z) { return (y ^ (x | ~z)); }
-  rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
+    function F(x, y, z) { return (x & y) | (~x & z); }
+    function G(x, y, z) { return (x & z) | (y & ~z); }
+    function H(x, y, z) { return (x ^ y ^ z); }
+    function I(x, y, z) { return (y ^ (x | ~z)); }
+    function rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
+  }
 }
 
 /** dont forget register your extension to Scratch */
