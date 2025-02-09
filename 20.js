@@ -175,6 +175,7 @@ class HashAndEncrypt {
 
   md5_string(originalText) {
     //转换为二进制
+    return "hello";
     stringBit = stringToBinary(originalText);
     originalBitLength = stringBit.length
 
@@ -187,7 +188,6 @@ class HashAndEncrypt {
         stringBit = stringBit.padEnd(960 - stringBit.length % 512, "0");
       }
     }
-    return stringBit;
     stringBit = stringBit + originalBitLength.toString(2);
 
     const numberOfCycles = stringBit.length / 512;
