@@ -271,7 +271,7 @@ class HashAndEncrypt {
 
   md5(args) {
     const hash = new Hash();
-    return hash.md5(args.TEXT.toString())
+    return "az";
   }
 }
 
