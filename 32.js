@@ -1,4 +1,14 @@
 class Hash {
+  // 初始化 MD5 缓冲区
+  initializeBuffer() {
+    return {
+      a: 0x67452301,
+      b: 0xefcdab89,
+      c: 0x98badcfe,
+      d: 0x10325476
+    };
+  }
+
   // 将字符串转换为字节数组
   stringToBytes(str) {
     const bytes = [];
@@ -8,14 +18,32 @@ class Hash {
     return bytes;
   }
 
-  // 初始化 MD5 缓冲区
-  initializeBuffer() {
-    return {
-      a: 0x67452301,
-      b: 0xEFCDAB89,
-      c: 0x98BADCFE,
-      d: 0x10325476
-    };
+  // 填充消息
+  padMessage(bytes, originalBitLength) {
+    const padding = [0x80]; // 添加一个1
+    while ((bytes.length + padding.length) % 64 !== 56) {
+      padding.push(0x00); // 填充0
+    }
+    const paddedBytes = bytes.concat(padding);
+    const lengthBytes = [];
+    for (let i = 0; i < 8; i++) {
+      lengthBytes.push((originalBitLength >>> (56 - i * 8)) & 0xFF);
+    }
+    return paddedBytes.concat(lengthBytes);
+  }
+
+  // 将字节数组转换为32位整数数组
+  bytesToWords(bytes) {
+    const words = [];
+    for (let i = 0; i < bytes.length; i += 4) {
+      words.push(
+        (bytes[i] << 24) |
+        (bytes[i + 1] << 16) |
+        (bytes[i + 2] << 8) |
+        bytes[i + 3]
+      );
+    }
+    return words;
   }
 
   // MD5 主循环
@@ -88,40 +116,11 @@ class Hash {
 
   // 计算 MD5 哈希值
   md5(originalText) {
-    // 转换为字节数组
     const bytes = this.stringToBytes(originalText);
     const originalBitLength = bytes.length * 8; // 原始消息长度（以比特为单位）
+    const paddedBytes = this.padMessage(bytes, originalBitLength);
+    const blocks = this.bytesToWords(paddedBytes);
 
-    // 填充文本
-    bytes.push(0x80); // 添加一个1（0x80）
-    while ((bytes.length * 8) % 512 !== 448) {
-      bytes.push(0x00); // 填充0
-    }
-
-    // 添加原始消息长度（以比特为单位）
-    const lengthBytes = [];
-    for (let i = 0; i < 8; i++) {
-      lengthBytes.push((originalBitLength >>> (56 - i * 8)) & 0xFF);
-    }
-    bytes.push(...lengthBytes);
-
-    // 划分字符串
-    const blocks = [];
-    for (let i = 0; i < bytes.length; i += 64) {
-      const block = bytes.slice(i, i + 64);
-      const blockArray = [];
-      for (let j = 0; j < 16; j++) {
-        blockArray.push(
-          (block[j * 4] << 24) |
-          (block[j * 4 + 1] << 16) |
-          (block[j * 4 + 2] << 8) |
-          block[j * 4 + 3]
-        );
-      }
-      blocks.push(blockArray);
-    }
-
-    // 执行主循环
     return this.md5MainLoop(blocks);
   }
 }
