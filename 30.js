@@ -60,10 +60,10 @@ class Hash {
         a = temp;
       }
 
-      buffer.a = (buffer.a + a) & 0xFFFFFFFF;
-      buffer.b = (buffer.b + b) & 0xFFFFFFFF;
-      buffer.c = (buffer.c + c) & 0xFFFFFFFF;
-      buffer.d = (buffer.d + d) & 0xFFFFFFFF;
+      buffer.a = this.add32(buffer.a, a);
+      buffer.b = this.add32(buffer.b, b);
+      buffer.c = this.add32(buffer.c, c);
+      buffer.d = this.add32(buffer.d, d);
     }
 
     return this.toHex(buffer);
@@ -75,13 +75,17 @@ class Hash {
   H(x, y, z) { return (x ^ y ^ z); }
   I(x, y, z) { return (y ^ (x | ~z)); }
   rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
+  add32(a, b) { return (a + b) & 0xFFFFFFFF; }
   toHex(buffer) {
     return [
-      buffer.a.toString(16).padStart(8, '0'),
-      buffer.b.toString(16).padStart(8, '0'),
-      buffer.c.toString(16).padStart(8, '0'),
-      buffer.d.toString(16).padStart(8, '0')
+      this.wordToHex(buffer.a),
+      this.wordToHex(buffer.b),
+      this.wordToHex(buffer.c),
+      this.wordToHex(buffer.d)
     ].join('');
+  }
+  wordToHex(word) {
+    return (word >>> 0).toString(16).padStart(8, '0');
   }
 
   // 计算 MD5 哈希值
@@ -95,7 +99,7 @@ class Hash {
     while (paddedStringBit.length % 512 !== 448) {
       paddedStringBit += '0';
     }
-    const lengthInBits = originalBitLength.toString(2).padStart(64, '0');
+    const lengthInBits = (originalBitLength / 8).toString(2).padStart(64, '0'); // 原始长度以字节为单位
     paddedStringBit += lengthInBits;
 
     // 划分字符串
