@@ -122,6 +122,14 @@ class Hash {
 
     return this.md5MainLoop(blocks);
   }
+
+  async hash(message, method="SHA-256") {
+    const msgBuffer = new TextEncoder().encode(message); // 将字符串编码为UTF-8字节数组
+    const hashBuffer = await crypto.subtle.digest(method, msgBuffer); // 计算哈希值
+    const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); // 转换为十六进制字符串
+    return hashHex;
+  }
 }
 
 class HashAndEncrypt {
@@ -213,13 +221,17 @@ class HashAndEncrypt {
           func: "md5",
         },
         {
-          opcode: "test",
+          opcode: "哈希",
 
           blockType: Scratch.BlockType.REPORTER,
 
-          text: "test [TEXT]",
+          text: "哈希 [METHOD] [TEXT]",
 
           arguments: {
+            METHOD: {
+              type: Scratch.ArgumentType.OPTION,
+              menu: "HashMethod"
+            },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
 
@@ -227,9 +239,26 @@ class HashAndEncrypt {
             },
           },
 
-          func: "sha256",
+          func: "hash",
         }
       ],
+
+      menus: {
+        HashMethod: {
+          acceptReporters: false,
+          items: [
+            {text: "SHA-1", value: "SHA-1"},
+            {text: "SHA-224", value: "SHA-224"},
+            {text: "SHA-256", value: "SHA-256"},
+            {text: "SHA-384", value: "SHA-384"},
+            {text: "SHA-512", value: "SHA-512"},
+            {text: "SHA3-224", value: "SHA-3-224"},
+            {text: "SHA3-256", value: "SHA-3-256"},
+            {text: "SHA3-384", value: "SHA-3-384"},
+            {text: "SHA3-512", value: "SHA-3-512"}
+          ]
+        }
+      },
 
       // 可选:翻译
       translation_map: {
@@ -288,13 +317,8 @@ class HashAndEncrypt {
   }
 
   // 实现SHA-256哈希计算
-  async sha256(args) {
-    const message = args.TEXT.toString();
-    const msgBuffer = new TextEncoder().encode(message); // 将字符串编码为UTF-8字节数组
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer); // 计算哈希值
-    const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
-    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); // 转换为十六进制字符串
-    return hashHex;
+  hash(args) {
+    return new Hash().hash(args.TEXT.toString(), args.METHOD.toString());
   }
 }
 
