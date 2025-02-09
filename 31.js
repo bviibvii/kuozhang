@@ -1,13 +1,11 @@
 class Hash {
-  // 将字符串转换为二进制字符串
-  stringToBinary(str) {
-    let binaryString = '';
+  // 将字符串转换为字节数组
+  stringToBytes(str) {
+    const bytes = [];
     for (let i = 0; i < str.length; i++) {
-      const charCode = str.charCodeAt(i);
-      const binaryChar = charCode.toString(2).padStart(8, '0');
-      binaryString += binaryChar;
+      bytes.push(str.charCodeAt(i));
     }
-    return binaryString;
+    return bytes;
   }
 
   // 初始化 MD5 缓冲区
@@ -90,25 +88,35 @@ class Hash {
 
   // 计算 MD5 哈希值
   md5(originalText) {
-    // 转换为二进制
-    const stringBit = this.stringToBinary(originalText);
-    const originalBitLength = stringBit.length;
+    // 转换为字节数组
+    const bytes = this.stringToBytes(originalText);
+    const originalBitLength = bytes.length * 8; // 原始消息长度（以比特为单位）
 
     // 填充文本
-    let paddedStringBit = stringBit + '1';
-    while (paddedStringBit.length % 512 !== 448) {
-      paddedStringBit += '0';
+    bytes.push(0x80); // 添加一个1（0x80）
+    while ((bytes.length * 8) % 512 !== 448) {
+      bytes.push(0x00); // 填充0
     }
-    const lengthInBits = (originalBitLength / 8).toString(2).padStart(64, '0'); // 原始长度以字节为单位
-    paddedStringBit += lengthInBits;
+
+    // 添加原始消息长度（以比特为单位）
+    const lengthBytes = [];
+    for (let i = 0; i < 8; i++) {
+      lengthBytes.push((originalBitLength >>> (56 - i * 8)) & 0xFF);
+    }
+    bytes.push(...lengthBytes);
 
     // 划分字符串
     const blocks = [];
-    for (let i = 0; i < paddedStringBit.length; i += 512) {
-      const block = paddedStringBit.substring(i, i + 512);
+    for (let i = 0; i < bytes.length; i += 64) {
+      const block = bytes.slice(i, i + 64);
       const blockArray = [];
-      for (let j = 0; j < 512; j += 32) {
-        blockArray.push(parseInt(block.substring(j, j + 32), 2));
+      for (let j = 0; j < 16; j++) {
+        blockArray.push(
+          (block[j * 4] << 24) |
+          (block[j * 4 + 1] << 16) |
+          (block[j * 4 + 2] << 8) |
+          block[j * 4 + 3]
+        );
       }
       blocks.push(blockArray);
     }
