@@ -12,7 +12,7 @@ class Hash{
     return binaryString;
   }
 
-  md5_string(originalText) {
+  md5(originalText) {
     //转换为二进制
     stringBit = this.stringToBinary(originalText);
     originalBitLength = stringBit.length
