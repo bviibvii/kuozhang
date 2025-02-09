@@ -1,3 +1,13 @@
+const script = document.createElement('script');
+script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
+document.head.appendChild(script);
+script.onload = function () {
+  console.log("CryptoJS 加载完成，可以使用了！");
+  console.log(CryptoJS);
+};
+script.onerror = function () {
+    console.error("CryptoJS 加载失败，请检查网络或 CDN 地址是否正确！");
+};
 
 class Hash {
   // 初始化 MD5 缓冲区
@@ -125,9 +135,6 @@ class Hash {
   }
 
   hash(message, method="SHA-256") {
-    if (method == "SHA-224") {
-      return this.SHA224(message); //截取前224位
-    }
     return this.SHA(message, method);
   }
 
@@ -137,17 +144,6 @@ class Hash {
     const hashArray = Array.from(new Uint8Array(hashBuffer)); // 将哈希值转换为数组
     const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join(''); // 转换为十六进制字符串
     return hashHex;
-  }
-
-  async SHA224(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = new Uint8Array(hashBuffer);
-    const truncatedHashArray = hashArray.slice(0, 28); // 截取前28字节
-    const truncatedHashHex = Array.from(truncatedHashArray)
-      .map(byte => byte.toString(16).padStart(2, '0'))
-      .join('');
-    return truncatedHashHex;
   }
 }
 
@@ -269,7 +265,6 @@ class HashAndEncrypt {
           acceptReporters: false,
           items: [
             {text: "SHA-1", value: "SHA-1"},
-            {text: "SHA-224", value: "SHA-224"},
             {text: "SHA-256", value: "SHA-256"},
             {text: "SHA-384", value: "SHA-384"},
             {text: "SHA-512", value: "SHA-512"},
