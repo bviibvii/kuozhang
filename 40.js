@@ -1,7 +1,3 @@
-const script = document.createElement('script');
-script.src = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
-document.head.appendChild(script);
-
 class Hash {
   // 初始化 MD5 缓冲区
   initializeBuffer() {
@@ -13,13 +9,10 @@ class Hash {
     };
   }
 
-  // 将字符串转换为字节数组
+  // 将字符串转换为UTF-8字节数组
   stringToBytes(str) {
-    const bytes = [];
-    for (let i = 0; i < str.length; i++) {
-      bytes.push(str.charCodeAt(i));
-    }
-    return bytes;
+    const encoder = new TextEncoder();
+    return Array.from(encoder.encode(str));
   }
 
   // 填充消息
@@ -28,23 +21,32 @@ class Hash {
     while ((bytes.length + padding.length) % 64 !== 56) {
       padding.push(0x00); // 填充0
     }
+    
+    // 处理长度的小端序存储
     const paddedBytes = bytes.concat(padding);
-    const lengthBytes = [];
-    for (let i = 0; i < 8; i++) {
-      lengthBytes.push((originalBitLength >>> (56 - i * 8)) & 0xFF);
+    const low = originalBitLength & 0xFFFFFFFF;
+    const high = (originalBitLength >>> 32) & 0xFFFFFFFF;
+
+    // 添加小端序长度字节
+    for (let i = 0; i < 4; i++) {
+      paddedBytes.push((low >>> (i * 8)) & 0xFF);
     }
-    return paddedBytes.concat(lengthBytes);
+    for (let i = 0; i < 4; i++) {
+      paddedBytes.push((high >>> (i * 8)) & 0xFF);
+    }
+
+    return paddedBytes;
   }
 
-  // 将字节数组转换为32位整数数组
+  // 将字节数组转换为32位小端序整数数组
   bytesToWords(bytes) {
     const words = [];
     for (let i = 0; i < bytes.length; i += 4) {
       words.push(
-        (bytes[i] << 24) |
-        (bytes[i + 1] << 16) |
-        (bytes[i + 2] << 8) |
-        bytes[i + 3]
+        bytes[i] |
+        (bytes[i + 1] << 8) |
+        (bytes[i + 2] << 16) |
+        (bytes[i + 3] << 24)
       );
     }
     return words;
@@ -53,40 +55,42 @@ class Hash {
   // MD5 主循环
   md5MainLoop(blocks) {
     const buffer = this.initializeBuffer();
-    const T = []; // 常量表
-    for (let i = 0; i < 64; i++) {
-      T[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 0x100000000); // 32-bit unsigned integer
-    }
+    const T = Array.from({length: 64}, (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * 0x100000000));
 
-    const shifts = [7, 12, 17, 22, 5, 9, 14, 20, 4, 11, 16, 23, 6, 10, 15, 21];
+    // 修正后的移位表
+    const shifts = [
+      7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+      5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
+      4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
+      6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
+    ];
 
     for (let i = 0; i < blocks.length; i += 16) {
-      let a = buffer.a;
-      let b = buffer.b;
-      let c = buffer.c;
-      let d = buffer.d;
+      let [a, b, c, d] = [buffer.a, buffer.b, buffer.c, buffer.d];
 
       for (let j = 0; j < 64; j++) {
         let f, g;
         if (j < 16) {
-          f = this.F(b, c, d);
+          f = (b & c) | (~b & d);
           g = j;
         } else if (j < 32) {
-          f = this.G(b, c, d);
+          f = (b & d) | (c & ~d);
           g = (5 * j + 1) % 16;
         } else if (j < 48) {
-          f = this.H(b, c, d);
+          f = b ^ c ^ d;
           g = (3 * j + 5) % 16;
         } else {
-          f = this.I(b, c, d);
+          f = c ^ (b | ~d);
           g = (7 * j) % 16;
         }
 
-        let temp = d;
-        d = c;
-        c = b;
-        b = b + this.rotateLeft(a + f + T[j] + blocks[i + g], shifts[j % 16]);
-        a = temp;
+        // 正确的变量轮换逻辑
+        const temp = a + f + blocks[i + g] + T[j];
+        const rotated = this.rotateLeft(temp, shifts[j]);
+        const newVal = b + rotated;
+
+        // 更新变量
+        [a, b, c, d] = [d, newVal, b, c];
       }
 
       buffer.a = this.add32(buffer.a, a);
@@ -99,12 +103,14 @@ class Hash {
   }
 
   // 辅助函数
-  F(x, y, z) { return (x & y) | (~x & z); }
-  G(x, y, z) { return (x & z) | (y & ~z); }
-  H(x, y, z) { return (x ^ y ^ z); }
-  I(x, y, z) { return (y ^ (x | ~z)); }
-  rotateLeft(value, bits) { return (value << bits) | (value >>> (32 - bits)); }
-  add32(a, b) { return (a + b) & 0xFFFFFFFF; }
+  rotateLeft(value, bits) { 
+    return (value << bits) | (value >>> (32 - bits));
+  }
+  
+  add32(a, b) { 
+    return (a + b) >>> 0; // 使用无符号右移确保32位
+  }
+  
   toHex(buffer) {
     return [
       this.wordToHex(buffer.a),
@@ -113,17 +119,21 @@ class Hash {
       this.wordToHex(buffer.d)
     ].join('');
   }
+  
   wordToHex(word) {
-    return (word >>> 0).toString(16).padStart(8, '0');
+    const hex = [];
+    for (let i = 0; i < 4; i++) {
+      hex.push((word >>> (i * 8)).toString(16).padStart(2, '0'));
+    }
+    return hex.reverse().join('');
   }
 
   // 计算 MD5 哈希值
   md5(originalText) {
     const bytes = this.stringToBytes(originalText);
-    const originalBitLength = bytes.length * 8; // 原始消息长度（以比特为单位）
+    const originalBitLength = bytes.length * 8;
     const paddedBytes = this.padMessage(bytes, originalBitLength);
     const blocks = this.bytesToWords(paddedBytes);
-
     return this.md5MainLoop(blocks);
   }
 
