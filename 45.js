@@ -361,10 +361,22 @@ class HashAndEncrypt {
 
   test(args) {
     let text = args.TEXT.toString();
-    console.log("Salt:", salt.toString());
-    console.log("Key:", key.toString());
-    console.log("IV:", encrypted.iv.toString());
-    return CryptoJS.AES.encrypt(text, "azdadhauy").toString();
+  
+  // 显式设置盐（salt）和迭代次数
+  const salt = CryptoJS.enc.Hex.parse("0000000000000000"); // 固定盐（示例）
+  const key = CryptoJS.PBKDF2("azdadhauy", salt, {
+    keySize: 256 / 32,  // AES-256 需要 8 个 32 位字（256 位）
+    iterations: 1000    // 迭代次数
+  });
+
+  // 加密配置
+  const encrypted = CryptoJS.AES.encrypt(text, key, {
+    iv: salt,           // 使用盐作为 IV（示例，实际应随机生成）
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+
+  return encrypted.toString();
   }
 }
 
