@@ -42,11 +42,11 @@ class Hash {
         hash = CryptoJS.SHA3(message, { outputLength: 512 });
         break;
       default:
-        console.log(`Unsupported hash method: ${method}`);
+        console.error(`Unsupported hash method: ${method}`);
         return "错误的方法";
     }
 
-    switch (returnType.toUpperCase()) {
+    switch (returnType.toString()) {
       case "hex":
         hash = hash.toString(CryptoJS.enc.Hex);
         break;
@@ -54,10 +54,10 @@ class Hash {
         hash = CryptoJS.enc.Base64.stringify(hash);
         break;
       case "json":
-        hash = JSON.stringify(CryptoJS.enc.Utf8.stringify(hash));
+        hash = JSON.stringify(hash);
         break;
       default:
-        console.log(`Unsupported return type: ${returnType}`);
+        console.error(`Unsupported return type: ${returnType}`);
         return "错误的返回类型";
     }
     return hash; // 将结果转换为十六进制字符串
