@@ -244,15 +244,15 @@ class HashAndEncrypt {
     const typeString = args.TYPE.toString();
     if (this.returnTypeList.includes(typeString)){
       this.returnType = typeString;
-      console.log(`设置成${this.returnType}`)
     }
   }
 
   hash(args) {
+    console.log(this.returnType);
     return new Hash().hash({
       message: args.TEXT.toString(),
       method: args.METHOD.toString(),
-      returnType: this.returnType
+      returnType: this.returnType,
     });
   }
 
