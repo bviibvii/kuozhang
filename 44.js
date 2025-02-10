@@ -361,7 +361,9 @@ class HashAndEncrypt {
 
   test(args) {
     let text = args.TEXT.toString();
-    console.log(text);
+    console.log("Salt:", salt.toString());
+    console.log("Key:", key.toString());
+    console.log("IV:", encrypted.iv.toString());
     return CryptoJS.AES.encrypt(text, "azdadhauy").toString();
   }
 }
