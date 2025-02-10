@@ -342,7 +342,7 @@ class HashAndEncrypt {
 
   isValidBase64(args) {
     try {
-      base64Decode(args);
+      this.base64Decode(args);
       return true;
     } catch (error) {
       return false;
@@ -360,7 +360,9 @@ class HashAndEncrypt {
   }
 
   test(args) {
-    return CryptoJS.AES.encrypt(args.TEXT.toString(), "azdadhauy");
+    text = args.TEXT.toString();
+    console.log(text);
+    return CryptoJS.AES.encrypt(text, "azdadhauy").toString();
   }
 }
 
