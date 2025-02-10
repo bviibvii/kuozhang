@@ -244,6 +244,7 @@ class HashAndEncrypt {
     const typeString = args.TYPE.toString();
     if (this.returnTypeList.includes(typeString)){
       this.returnType = typeString;
+      console.log(`设置成${this.returnType}`)
     }
   }
 
