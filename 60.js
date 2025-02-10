@@ -47,13 +47,13 @@ class Hash {
     }
 
     switch (returnType.toUpperCase()) {
-      case "hex":
+      case "HEX":
         hash = hash.toString(CryptoJS.enc.Hex);
         break;
-      case "base64":
+      case "BASE64":
         hash = CryptoJS.enc.Base64.stringify(hash);
         break;
-      case "json":
+      case "JSON":
         hash = JSON.stringify(hash);
         break;
       default:
@@ -196,9 +196,9 @@ class HashAndEncrypt {
         returnType: {
           acceptReporters: true,
           items: [
-            { text: "十六进制", value: "hex" },
-            { text: "BASE64", value: "base64" },
-            { text: "JSON", value: "json" },
+            { text: "hex", value: "hex" },
+            { text: "base64", value: "base64" },
+            { text: "json", value: "json" },
           ]
         }
       },
