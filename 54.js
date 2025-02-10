@@ -45,8 +45,8 @@ class Hash {
         console.error(`Unsupported hash method: ${method}`);
         return "错误的方法";
     }
-
-    switch (returnType.toString()) {
+console.log(returnType)
+    switch (returnType.toUpperCase()) {
       case "hex":
         hash = hash.toString(CryptoJS.enc.Hex);
         break;
