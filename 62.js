@@ -160,7 +160,7 @@ class HashAndEncrypt {
         {
           opcode: "test",
 
-          blockType: Scratch.BlockType.REPORTER,
+          blockType: Scratch.BlockType.COMMAND,
 
           text: "测试 [TEXT]",
 
@@ -173,6 +173,23 @@ class HashAndEncrypt {
           },
 
           func: "test",
+        },
+        {
+          opcode: "DEBUGgetout",
+
+          blockType: Scratch.BlockType.REPORTER,
+
+          text: "DEBUG获取输出 [TEXT]",
+
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.REPORTER,
+
+              defaultValue: "Hello world!"
+            },
+          },
+
+          func: "getout",
         }
       ],
 
@@ -253,6 +270,10 @@ class HashAndEncrypt {
       args.METHOD.toString(),
       this.returnType,
     );
+  }
+  
+  getout(args) {
+    console.log(args.TEXT)
   }
 
   test(args) {
