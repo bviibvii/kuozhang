@@ -360,7 +360,7 @@ class HashAndEncrypt {
   }
 
   test(args) {
-    text = args.TEXT.toString();
+    let text = args.TEXT.toString();
     console.log(text);
     return CryptoJS.AES.encrypt(text, "azdadhauy").toString();
   }
