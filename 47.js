@@ -11,6 +11,9 @@ class Hash {
     case "MD5":
       hash = CryptoJS.MD5(message);
       break;
+    case "RIPEMD160":
+      hash = CryptoJS.RIPEMD160(message);
+      break;
     case "SHA-1":
       hash = CryptoJS.SHA1(message);
       break;
@@ -171,6 +174,7 @@ class HashAndEncrypt {
             { text: "SHA3-256", value: "SHA3-256" },
             { text: "SHA3-384", value: "SHA3-384" },
             { text: "SHA3-512", value: "SHA3-512" },
+            { text: "RIPEMD160", value: "RIPEMD160" },
             { text: "MD5", value: "MD5" },
           ]
         }
@@ -193,26 +197,12 @@ class HashAndEncrypt {
   }
 
   base64Encode(args) {
-    // 将字符串转换为二进制字符串
-    const encoder = new TextEncoder();
-    const uint8Array = encoder.encode(args.TEXT.toString());
-    // 将Uint8Array转换为二进制字符串
-    const binaryString = String.fromCharCode(...uint8Array);
-    // Base64编码
-    return window.btoa(binaryString);
+    return CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(args.TEXT.toString()));
   }
 
   base64Decode(args) {
     try {
-      // Base64字符串解码为二进制字符串
-      const binaryString = window.atob(args.TEXT.toString());
-      // 二进制字符串转换为普通字符串
-      const decoder = new TextDecoder();
-      const uint8Array = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        uint8Array[i] = binaryString.charCodeAt(i);
-      }
-      return decoder.decode(uint8Array);
+      return CryptoJS.enc.Base64.parse(args.TEXT.toString()).toString(CryptoJS.enc.Utf8);
     } catch (error) {
       return "错误的base64";
     }
