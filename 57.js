@@ -46,7 +46,7 @@ class Hash {
         return "错误的方法";
     }
     console.log(returnType);
-    switch (returnType) {
+    switch (returnType.toLowerCase()) {
       case "hex":
         hash = hash.toString(CryptoJS.enc.Hex);
         break;
@@ -252,7 +252,7 @@ class HashAndEncrypt {
     return new Hash().hash({
       message: args.TEXT.toString(),
       method: args.METHOD.toString(),
-      returnType: this.returnType,
+      "returnType": this.returnType,
     });
   }
 
