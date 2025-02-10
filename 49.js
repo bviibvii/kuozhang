@@ -242,7 +242,7 @@ class HashAndEncrypt {
 
   setReturnType(args) {
     const typeString = args.Type.toString()
-    if this.returnTypeList.includes(typeString){
+    if (this.returnTypeList.includes(typeString)){
       this.returnType = typeString;
     }
   }
