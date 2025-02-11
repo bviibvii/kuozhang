@@ -176,9 +176,7 @@ class HashAndEncrypt {
   iv = CryptoJS.enc.Hex.parse("0000000000000000");
   encryptMode = CryptoJS.mode.CBC;
   encryptPad = CryptoJS.pad.Pkcs7;
-
-  getInfo() {
-    const info = {
+  info = {
       id: "hashAndEncrypt",
       name: "哈希与加密",
       color1: "#4D7EB4",
@@ -196,11 +194,6 @@ class HashAndEncrypt {
       // in the order intended for display.
       // Scratch object is pera
       blocks: [
-        {
-          opcode: 'encodeTEXT',
-          blockType: Scratch.BlockType.COMMAND,
-          text: '编码/解码'
-        },
         {
           opcode: "base64Encode",
           blockType: Scratch.BlockType.REPORTER,
@@ -238,11 +231,6 @@ class HashAndEncrypt {
             },
           },
           func: "isValidBase64",
-        },
-        {
-          opcode: 'hashTEXT',
-          blockType: Scratch.BlockType.COMMAND,
-          text: '哈希'
         },
         {
           opcode: "hash",
@@ -565,7 +553,10 @@ class HashAndEncrypt {
           "someBlocks.getValue": "get[KEY]",
         },
       },
-    };
+  }
+
+  getInfo() {
+    const info = this.info;
     for (const name in this.cryptographicFunctions()) {
       info.menus.cryptographicFunctions.items.push({
         text: name,
@@ -723,4 +714,21 @@ class HashAndEncrypt {
 }
 
 /** dont forget register your extension to Scratch */
-Scratch.extensions.register(new HashAndEncrypt());
+const HashAndEncryptInstance = new HashAndEncrypt();
+Scratch.extensions.register(HashAndEncryptInstance);
+HashAndEncryptInstance.info.blocks.arguments = [
+  {
+          opcode: "base64Encode",
+          blockType: Scratch.BlockType.REPORTER,
+          text: "base64编码 [TEXT]",
+          arguments: {
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "Hello world!"
+            },
+          },
+          func: "base64Encode",
+        }
+];
+HashAndEncryptInstance.name = "测试";
+Scratch.extensions.register(HashAndEncryptInstance);
