@@ -596,7 +596,7 @@ class HashAndEncrypt {
     if (len <= 0) {
       len = 8;
     }
-    return CryptoJS.lib.WordArray.random(len);
+    return CryptoJS.enc.Hex.stringify(CryptoJS.lib.WordArray.random(len));
   }
 
   encrypt(args) {
