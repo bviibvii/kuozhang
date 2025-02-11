@@ -464,7 +464,8 @@ class HashAndEncrypt {
     return Hash.hmac(
       args.TEXT.toString(),
       args.KEY.toString(),
-      args.METHOD.toString()
+      args.METHOD.toString(),
+      this.returnType
     );
   }
 
