@@ -334,7 +334,7 @@ class HashAndEncrypt {
         {
           opcode: "setSalt",
           blockType: Scratch.BlockType.COMMAND,
-          text: "设置盐 [SLAT]",
+          text: "设置盐 [SALT]",
           arguments: {
             SALT: {
               type: Scratch.ArgumentType.STRING,
