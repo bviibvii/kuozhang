@@ -172,6 +172,7 @@ class HashAndEncrypt {
     "base64",
     "json"
   ];
+  salt = CryptoJS.enc.Hex.parse("0000000000000000");
 
   getInfo() {
     return {
@@ -309,6 +310,50 @@ class HashAndEncrypt {
             }
           },
           func: "createProgressiveHmac",
+        },
+        {
+          opcode: "PBKDF2",
+          blockType: Scratch.BlockType.REPORTER,
+          text: "密码加强 [KEY] 生成长度:[KEYLEN] 迭代次数:[ITERATIONS]",
+          arguments: {
+            KEY: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "原密钥"
+            },
+            KEYLEN: {
+              type: Scratch.ArgumentType.NUMBER,
+              defaultValue: "2"
+            },
+            ITERATIONS: {
+              type: Scratch.ArgumentType.NUMBER,
+              defaultValue: "1000"
+            }
+          },
+          func: "PBKDF2",
+        },
+        {
+          opcode: "setSalt",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置盐 [SLAT]",
+          arguments: {
+            SALT: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "0000000000000000"
+            }
+          },
+          func: "setSalt",
+        },
+        {
+          opcode: "randomHex",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "随机十六进制 [LEN]",
+          arguments: {
+            LEN: {
+              type: Scratch.ArgumentType.NUMBER,
+              defaultValue: "16"
+            }
+          },
+          func: "randomHex",
         },
         {
           opcode: "setReturnType",
@@ -489,6 +534,33 @@ class HashAndEncrypt {
       args.HMACOBJECT.toString(),
       this.returnType
     );
+  }
+
+  PBKDF2(args) {
+    const len = parseInt(args.KEYLEN);
+    const iteraions = parseInt(args.ITERATIONS);
+    if (len <= 0) {
+      len = 1
+    }
+    if (iteraions <= 0) {
+      iteraions = 1000
+    }
+    return CryptoJS.PBKDF2(args.KEY.toString(), this.salt, {
+      keySize: len * 32, // 密钥长度为 256 位
+      iterations: iteraions // 迭代次数
+    });
+  }
+
+  setSalt(args) {
+    this.salt = args.SALT;
+  }
+
+  randomHex(args) {
+    len = parseInt(args.LEN);
+    if (len <= 0) {
+      len = 8;
+    }
+    return CryptoJS.lib.WordArray.random(len);
   }
   
   getout(args) {
