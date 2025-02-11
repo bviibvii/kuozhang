@@ -172,10 +172,13 @@ class HashAndEncrypt {
     "base64",
     "json"
   ];
+  cryptographicFunctions = {
+    "AES": { "encrypt": Cryptojs.AES.encrypt, "decrypt": CryptoJS.AES.decrypt }
+  };
   salt = CryptoJS.enc.Hex.parse("0000000000000000");
 
   getInfo() {
-    return {
+    const info = {
       id: "hashAndEncrypt",
       name: "哈希与加密",
       color1: "#4D7EB4",
@@ -368,6 +371,26 @@ class HashAndEncrypt {
           func: "setReturnType",
         },
         {
+          opcode: "encrypt",
+          blockType: Scratch.BlockType.REPORTER,
+          text: "加密 [MEYHOD] [TEXT] [KEY]",
+          arguments: {
+            METHOD: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "cryptographicFunctions"
+            },
+            TEXT: {
+              type: Scratch.ArgumentType.String,
+              defaultValue: "Hello world!"
+            },
+            KEY: {
+              type: Scratch.ArgumentType.String,
+              defaultValue: "密钥"
+            }
+          },
+          func: "encrypt",
+        },
+        {
           opcode: "test",
 
           blockType: Scratch.BlockType.COMMAND,
@@ -444,6 +467,9 @@ class HashAndEncrypt {
             { text: "MD5", value: "MD5" },
           ]
         },
+        cryptographicFunctions: {
+          items: []
+        },
         returnType: {
           acceptReporters: true,
           items: [
@@ -467,7 +493,14 @@ class HashAndEncrypt {
           "someBlocks.getValue": "get[KEY]",
         },
       },
+    };
+    for (const name in this.cryptographicFunctions) {
+      info.menus.cryptographicFunctions.items.push({
+        text: name,
+        value: name
+    });
     }
+    return info;
   }
 
   base64Encode(args) {
@@ -556,11 +589,19 @@ class HashAndEncrypt {
   }
 
   randomHex(args) {
-    len = parseInt(args.LEN);
+    const len = parseInt(args.LEN);
     if (len <= 0) {
       len = 8;
     }
     return CryptoJS.lib.WordArray.random(len);
+  }
+
+  encrypt(args) {
+    return CryptoJS.AES.encrypt(args.TEXT.toString(), args.KEY.toString(), {
+      iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
   }
   
   getout(args) {
