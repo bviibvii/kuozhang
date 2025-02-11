@@ -197,6 +197,11 @@ class HashAndEncrypt {
       // Scratch object is pera
       blocks: [
         {
+          opcode: 'encodeTEXT',
+          blockType: Scratch.BlockType.COMMAND,
+          text: '编码/解码'
+        },
+        {
           opcode: "base64Encode",
           blockType: Scratch.BlockType.REPORTER,
           text: "base64编码 [TEXT]",
@@ -233,6 +238,11 @@ class HashAndEncrypt {
             },
           },
           func: "isValidBase64",
+        },
+        {
+          opcode: 'hashTEXT',
+          blockType: Scratch.BlockType.COMMAND,
+          text: '哈希'
         },
         {
           opcode: "hash",
@@ -708,7 +718,7 @@ class HashAndEncrypt {
       iv: this.iv,
       mode: this.encryptMode,
       padding: this.encryptPad
-    }).toString();
+    }).toString(CryptoJS.enc.Utf8);
   }
 }
 
