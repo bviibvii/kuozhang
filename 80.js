@@ -173,6 +173,9 @@ class HashAndEncrypt {
     "json"
   ];
   salt = CryptoJS.enc.Hex.parse("0000000000000000");
+  iv = CryptoJS.enc.Hex.parse("0000000000000000");
+  encryptMode = CryptoJS.mode.CBC;
+  encryptPaadding = CryptoJS.pad.Pkcs7;
 
   getInfo() {
     const info = {
@@ -344,6 +347,18 @@ class HashAndEncrypt {
           func: "setSalt",
         },
         {
+          opcode: "setIv",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置向量 [IV]",
+          arguments: {
+            IV: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "0000000000000000"
+            }
+          },
+          func: "setIv",
+        },
+        {
           opcode: "randomHex",
           blockType: Scratch.BlockType.REPORTER,
           text: "随机十六进制 [LEN]",
@@ -386,6 +401,50 @@ class HashAndEncrypt {
             }
           },
           func: "encrypt",
+        },
+        {
+          opcode: "decrypt",
+          blockType: Scratch.BlockType.REPORTER,
+          text: "解密 [METHOD] [TEXT] [KEY]",
+          arguments: {
+            METHOD: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "cryptographicFunctions"
+            },
+            TEXT: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "密文"
+            },
+            KEY: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "密钥"
+            }
+          },
+          func: "decrypt",
+        },
+        {
+          opcode: "setCryptoMode",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置加密模式 [METHOD]",
+          arguments: {
+            METHOD: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "encryptMode"
+            }
+          },
+          func: "setCryptoMode",
+        },
+        {
+          opcode: "setCryptoPad",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置填充模式 [METHOD]",
+          arguments: {
+            METHOD: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "encryptPad"
+            }
+          },
+          func: "setCryptPad",
         },
         {
           opcode: "test",
@@ -467,6 +526,12 @@ class HashAndEncrypt {
         cryptographicFunctions: {
           items: []
         },
+        encryptMode: {
+          items: []
+        },
+        encryptPad: {
+          items: []
+        },
         returnType: {
           acceptReporters: true,
           items: [
@@ -495,14 +560,31 @@ class HashAndEncrypt {
       info.menus.cryptographicFunctions.items.push({
         text: name,
         value: name
-    });
+      });
+    }
+    for (const mode in CryptoJS.mode) {
+      info.menus.encryptMode.items.push({
+        text: mode,
+        value: mode
+      });
+    }
+    for (const pad in CryptoJS.pad) {
+      info.menus.encryptPad.items.push({
+        text: pad,
+        value: pad
+      });
     }
     return info;
   }
 
   cryptographicFunctions() {
     return {
-      "AES": { "encrypt": CryptoJS.AES.encrypt, "decrypt": CryptoJS.AES.decrypt }
+      "AES": { "encrypt": CryptoJS.AES.encrypt, "decrypt": CryptoJS.AES.decrypt },
+      "DES": { "encrypt": CryptoJS.DES.encrypt, "decrypt": CryptoJS.DES.decrypt },
+      "三重DES": { "encrypt": CryptoJS.TripleDES.encrypt, "decrypt": CryptoJS.TripleDES.decrypt },
+      "Rabbit": { "encrypt": CryptoJS.Rabbit.encrypt, "decrypt": CryptoJS.Rabbit.decrypt },
+      "RC4": { "encrypt": CryptoJS.RC4.encrypt, "decrypt": CryptoJS.RC4.decrypt },
+      "RC4Drop": { "encrypt": CryptoJS.RC4Drop.encrypt, "decrypt": CryptoJS.RC4Drop.decrypt },
     };
   }
 
@@ -591,6 +673,18 @@ class HashAndEncrypt {
     this.salt = CryptoJS.enc.Hex.parse(args.SALT);
   }
 
+  setIv(args) {
+    this.iv = CryptoJS.enc.Hex.parse(args.IV);
+  }
+
+  setCryptoMode(args) {
+    this.encryptMode = CryptoJS.mode[args.METHOD.toString()];
+  }
+
+  setCryptoPad(args) {
+    this.encryptPad = CryptoJS.pad[args.METHOD.toString()];
+  }
+
   randomHex(args) {
     const len = parseInt(args.LEN);
     if (len <= 0) {
@@ -602,34 +696,18 @@ class HashAndEncrypt {
   encrypt(args) {
     const key = CryptoJS.enc.Hex.parse(args.KEY.toString());
     return this.cryptographicFunctions()[args.METHOD.toString()]["encrypt"](args.TEXT.toString(), key, {
-      iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7
+      iv: this.iv,
+      mode: this.encryptMode,
+      padding: this.encryptPad
     }).toString();
   }
-  
-  getout(args) {
-    console.log(args.TEXT)
-  }
 
-  test(args) {
-    let text = args.TEXT.toString();
-  
-  // 显式设置盐（salt）和迭代次数
-  const salt = CryptoJS.enc.Hex.parse("0000000000000000"); // 固定盐（示例）
-  const key = CryptoJS.PBKDF2("azdadhauy", salt, {
-    keySize: 256 / 32,  // AES-256 需要 8 个 32 位字（256 位）
-    iterations: 1000    // 迭代次数
-  });
-
-  // 加密配置
-  const encrypted = CryptoJS.AES.encrypt(text, key, {
-    iv: salt,           // 使用盐作为 IV（示例，实际应随机生成）
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  });
-
-  return encrypted.toString();
+  decrypt(args) {
+    const key = CryptoJS.enc.Hex.parse(args.KEY.toString());
+    return this.cryptographicFunctions()[args.METHOD.toString()]["decrypt"](args.TEXT.toString(), key, {
+      iv: this.iv,
+      mode: this.encryptMode
+    }).toString();
   }
 }
 
