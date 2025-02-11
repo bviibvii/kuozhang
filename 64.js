@@ -111,7 +111,7 @@ class Hash {
   }
 
   static newProgressiveHmac(key, method) {
-    if (!method.toUpperCase() in this.progressiveHmacMethod) {
+    if (!(method.toUpperCase() in this.progressiveHmacMethod)) {
       return "错误的方法";
     }
     return JSON.stringify({
@@ -123,7 +123,11 @@ class Hash {
   }
 
   static addProgressiveHmac(hmacObject, message) {
-    hmacObject = JSON.parse(hmacObject);
+    try {
+      hmacObject = JSON.parse(hmacObject);
+    } catch (e) {
+      return "错误的渐进式hmac对象";
+    }
     if (typeof hmacObject !== "object" || hmacObject === null) {
       return "错误的渐进式hmac对象";
     }
@@ -458,7 +462,7 @@ class HashAndEncrypt {
 
   hmac(args) {
     return Hash.hmac(
-      args.TEXt.toString(),
+      args.TEXT.toString(),
       args.KEY.toString(),
       args.METHOD.toString()
     );
