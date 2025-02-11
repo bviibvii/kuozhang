@@ -588,7 +588,7 @@ class HashAndEncrypt {
   }
 
   setSalt(args) {
-    this.salt = args.SALT;
+    this.salt = args.SALT.toString();
   }
 
   randomHex(args) {
