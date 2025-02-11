@@ -706,7 +706,8 @@ class HashAndEncrypt {
     const key = CryptoJS.enc.Hex.parse(args.KEY.toString());
     return this.cryptographicFunctions()[args.METHOD.toString()]["decrypt"](args.TEXT.toString(), key, {
       iv: this.iv,
-      mode: this.encryptMode
+      mode: this.encryptMode,
+      padding: this.encryptPad
     }).toString();
   }
 }
