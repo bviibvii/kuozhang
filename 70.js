@@ -172,9 +172,6 @@ class HashAndEncrypt {
     "base64",
     "json"
   ];
-  cryptographicFunctions = {
-    "AES": { "encrypt": Cryptojs.AES.encrypt, "decrypt": CryptoJS.AES.decrypt }
-  };
   salt = CryptoJS.enc.Hex.parse("0000000000000000");
 
   getInfo() {
@@ -494,13 +491,19 @@ class HashAndEncrypt {
         },
       },
     };
-    for (const name in this.cryptographicFunctions) {
+    for (const name in this.cryptographicFunctions()) {
       info.menus.cryptographicFunctions.items.push({
         text: name,
         value: name
     });
     }
     return info;
+  }
+
+  cryptographicFunctions() {
+    return {
+      "AES": { "encrypt": CryptoJS.AES.encrypt, "decrypt": CryptoJS.AES.decrypt }
+    };
   }
 
   base64Encode(args) {
