@@ -181,7 +181,7 @@ class HashAndEncrypt {
     this.encryptMode = CryptoJS.mode.CBC;
     this.encryptPad = CryptoJS.pad.Pkcs7;
 
-    this._formatMessage = runtime.getFormatMessage({
+    this.lformatMessage = runtime.getFormatMessage({
       "zh-cn": {
         "HashAndEncrypt.Text.helloWorld": "你好世界！",
         "HashAndEncrypt.Text.hmacObject": "HMAC对象",
@@ -245,7 +245,7 @@ class HashAndEncrypt {
      * @return {string}
      */
     formatMessage(id) {
-        return this._formatMessage({
+        return this.lformatMessage({
             id,
             default: id,
             description: id
