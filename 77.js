@@ -588,7 +588,7 @@ class HashAndEncrypt {
   }
 
   setSalt(args) {
-    this.salt = args.SALT;
+    this.salt = CryptoJS.enc.Hex.parse(args.SALT);
   }
 
   randomHex(args) {
@@ -600,7 +600,7 @@ class HashAndEncrypt {
   }
 
   encrypt(args) {
-    console.log(this.salt);
+    console.log(args.TEXT.toString());
     return this.cryptographicFunctions()[args.METHOD.toString()]["encrypt"](args.TEXT.toString(), args.KEY.toString(), {
       iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
       mode: CryptoJS.mode.CBC,
