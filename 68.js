@@ -333,7 +333,7 @@ class HashAndEncrypt {
         },
         {
           opcode: "setSalt",
-          blockType: Scratch.BlockType.COMMAND,
+          blockType: Scratch.BlockType.REPORTER,
           text: "设置盐 [SLAT]",
           arguments: {
             SALT: {
@@ -345,7 +345,7 @@ class HashAndEncrypt {
         },
         {
           opcode: "randomHex",
-          blockType: Scratch.BlockType.COMMAND,
+          blockType: Scratch.BlockType.REPORTER,
           text: "随机十六进制 [LEN]",
           arguments: {
             LEN: {
@@ -546,7 +546,7 @@ class HashAndEncrypt {
       iteraions = 1000
     }
     return CryptoJS.PBKDF2(args.KEY.toString(), this.salt, {
-      keySize: len * 32, // 密钥长度为 256 位
+      keySize: len, // 密钥长度为 256 位
       iterations: iteraions // 迭代次数
     });
   }
