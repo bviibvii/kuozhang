@@ -600,7 +600,7 @@ class HashAndEncrypt {
   }
 
   encrypt(args) {
-    return this.cryptographicFunctions[args.METHOD.toString()].encrypt(args.TEXT.toString(), args.KEY.toString(), {
+    return this.cryptographicFunctions()[args.METHOD.toString()]["encrypt"](args.TEXT.toString(), args.KEY.toString(), {
       iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
