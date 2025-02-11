@@ -183,6 +183,8 @@ class HashAndEncrypt {
 
     this._formatMessage = runtime.getFormatMessage({
       "zh-cn": {
+        "HashAndEncrypt.Text.helloWorld": "你好，世界！",
+        "HashAndEncrypt.Text.key": this.formatMessage("HashAndEncrypt.Text.key"),
         "HashAndEncrypt.name": "哈希与加密",
         "HashAndEncrypt.base64En": "base64编码 [TEXT]",
         "HashAndEncrypt.base64De": "base64解码 [TEXT]",
@@ -216,7 +218,7 @@ class HashAndEncrypt {
       docsURI: "https://ccw.site",
 
       blocks: [
-        "---",
+        this.formatMessage("HashAndEncrypt.Text.encode"),
         {
           opcode: "base64Encode",
           blockType: Scratch.BlockType.REPORTER,
@@ -224,7 +226,7 @@ class HashAndEncrypt {
           arguments: {
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
           },
           func: "base64Encode",
@@ -250,15 +252,16 @@ class HashAndEncrypt {
             TEXT: {
               type: Scratch.ArgumentType.STRING,
 
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
           },
           func: "isValidBase64",
         },
+        this.formatMessage("HashAndEncrypt.Text.Hash"),
         {
           opcode: "hash",
           blockType: Scratch.BlockType.REPORTER,
-          text: "哈希 [METHOD] [TEXT]",
+          text: this.formatMessage("HashAndEncrypt.hash"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -266,7 +269,7 @@ class HashAndEncrypt {
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
           },
           func: "hash",
@@ -274,7 +277,7 @@ class HashAndEncrypt {
         {
           opcode: "hmac",
           blockType: Scratch.BlockType.REPORTER,
-          text: "HMAC加密 [METHOD] [TEXT] [KEY]",
+          text: this.formatMessage("HashAndEncrypt.hmac"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -282,11 +285,11 @@ class HashAndEncrypt {
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "密钥"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.key")
             },
           },
           func: "hmac",
@@ -294,7 +297,7 @@ class HashAndEncrypt {
         {
           opcode: "progressiveHmac",
           blockType: Scratch.BlockType.REPORTER,
-          text: "生成HMAC对象 [METHOD] [KEY]",
+          text: this.formatMessage("HashAndEncrypt.progressiveHmac"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -302,7 +305,7 @@ class HashAndEncrypt {
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "密钥"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.key")
             },
           },
           func: "progressiveHmac",
@@ -310,15 +313,15 @@ class HashAndEncrypt {
         {
           opcode: "addMessageProgressiveHmac",
           blockType: Scratch.BlockType.REPORTER,
-          text: "HMAC对象添加信息 [HMACOBJECT] [TEXT]",
+          text: this.formatMessage("HashAndEncrypt.addMessageProgressiveHmac"),
           arguments: {
             HMACOBJECT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "HMAC对象"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.hmacObject")
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
           },
           func: "addProgressiveHmac",
@@ -326,23 +329,36 @@ class HashAndEncrypt {
         {
           opcode: "createProgressiveHmac",
           blockType: Scratch.BlockType.REPORTER,
-          text: "完成HMAC对象 [HMACOBJECT]",
+          text: this.formatMessage("HashAndEncrypt.createProgressiveHmac"),
           arguments: {
             HMACOBJECT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "HMAC对象"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.hmacObject")
             }
           },
           func: "createProgressiveHmac",
         },
         {
+          opcode: "setReturnType",
+          blockType: Scratch.BlockType.COMMAND,
+          text: this.formatMessage("HashAndEncrypt.setReturnType"),
+          arguments: {
+            TYPE: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "returnType"
+            },
+          },
+          func: "setReturnType",
+        },
+        this.formatMessage("HashAndEncrypt.Text.encrypt"),
+        {
           opcode: "PBKDF2",
           blockType: Scratch.BlockType.REPORTER,
-          text: "生成密码 [KEY] 生成长度:[KEYLEN] 迭代次数:[ITERATIONS]",
+          text: this.formatMessage("HashAndEncrypt.PBKDF2"),
           arguments: {
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "原密钥"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.originalKey")
             },
             KEYLEN: {
               type: Scratch.ArgumentType.NUMBER,
@@ -358,7 +374,7 @@ class HashAndEncrypt {
         {
           opcode: "randomHex",
           blockType: Scratch.BlockType.REPORTER,
-          text: "随机十六进制 [LEN]",
+          text: this.formatMessage("HashAndEncrypt.randomHex"),
           arguments: {
             LEN: {
               type: Scratch.ArgumentType.NUMBER,
@@ -370,7 +386,7 @@ class HashAndEncrypt {
         {
           opcode: "encrypt",
           blockType: Scratch.BlockType.REPORTER,
-          text: "加密 [METHOD] [TEXT] [KEY]",
+          text: this.formatMessage("HashAndEncrypt.encrypt"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -378,11 +394,11 @@ class HashAndEncrypt {
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.helloWorld")
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "密钥"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.key")
             }
           },
           func: "encrypt",
@@ -390,7 +406,7 @@ class HashAndEncrypt {
         {
           opcode: "decrypt",
           blockType: Scratch.BlockType.REPORTER,
-          text: "解密 [METHOD] [TEXT] [KEY]",
+          text: this.formatMessage("HashAndEncrypt.decrypt"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -398,11 +414,11 @@ class HashAndEncrypt {
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "密文"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.key")
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: "密钥"
+              defaultValue: this.formatMessage("HashAndEncrypt.Text.ciphertext")
             }
           },
           func: "decrypt",
@@ -410,7 +426,7 @@ class HashAndEncrypt {
         {
           opcode: "setSalt",
           blockType: Scratch.BlockType.COMMAND,
-          text: "设置盐 [SALT]",
+          text: this.formatMessage("HashAndEncrypt.setSalt"),
           arguments: {
             SALT: {
               type: Scratch.ArgumentType.STRING,
@@ -422,7 +438,7 @@ class HashAndEncrypt {
         {
           opcode: "setIv",
           blockType: Scratch.BlockType.COMMAND,
-          text: "设置向量 [IV]",
+          text: this.formatMessage("HashAndEncrypt.setIv"),
           arguments: {
             IV: {
               type: Scratch.ArgumentType.STRING,
@@ -432,21 +448,9 @@ class HashAndEncrypt {
           func: "setIv",
         },
         {
-          opcode: "setReturnType",
-          blockType: Scratch.BlockType.COMMAND,
-          text: "设置返回类型 [TYPE]",
-          arguments: {
-            TYPE: {
-              type: Scratch.ArgumentType.STRING,
-              menu: "returnType"
-            },
-          },
-          func: "setReturnType",
-        },
-        {
           opcode: "setCryptoMode",
           blockType: Scratch.BlockType.COMMAND,
-          text: "设置加密模式 [METHOD]",
+          text: this.formatMessage("HashAndEncrypt.setCryptoMode"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -458,7 +462,7 @@ class HashAndEncrypt {
         {
           opcode: "setCryptoPad",
           blockType: Scratch.BlockType.COMMAND,
-          text: "设置填充模式 [METHOD]",
+          text: this.formatMessage("HashAndEncrypt.setCryptoPad"),
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
@@ -550,7 +554,7 @@ class HashAndEncrypt {
     return {
       "AES": { "encrypt": CryptoJS.AES.encrypt, "decrypt": CryptoJS.AES.decrypt },
       "DES": { "encrypt": CryptoJS.DES.encrypt, "decrypt": CryptoJS.DES.decrypt },
-      "三重DES": { "encrypt": CryptoJS.TripleDES.encrypt, "decrypt": CryptoJS.TripleDES.decrypt },
+      "TripleDES": { "encrypt": CryptoJS.TripleDES.encrypt, "decrypt": CryptoJS.TripleDES.decrypt },
       "Rabbit": { "encrypt": CryptoJS.Rabbit.encrypt, "decrypt": CryptoJS.Rabbit.decrypt },
       "RC4": { "encrypt": CryptoJS.RC4.encrypt, "decrypt": CryptoJS.RC4.decrypt },
       "RC4Drop": { "encrypt": CryptoJS.RC4Drop.encrypt, "decrypt": CryptoJS.RC4Drop.decrypt },
@@ -683,7 +687,7 @@ window.tempExt = {
         description: "HashAndEncrypt.descp",
         extensionId: "HashAndEncrypt",
         iconURL: "",
-        insetIconURL: "", 
+        insetIconURL: HashAndEncryptIcon, 
         featured: true,
         disabled: false,
         collaborator: "作者 @ CCW"
