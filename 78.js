@@ -600,12 +600,15 @@ class HashAndEncrypt {
   }
 
   encrypt(args) {
-    console.log(args.TEXT.toString());
-    return this.cryptographicFunctions()[args.METHOD.toString()]["encrypt"](args.TEXT.toString(), args.KEY.toString(), {
+    const key = CryptoJS.PBKDF2(args.KEY.toString(), this.salt, {
+      keySize: 8,  // AES-256 需要 8 个 32 位字（256 位）
+      iterations: 1000    // 迭代次数
+    });
+    return this.cryptographicFunctions()[args.METHOD.toString()]["encrypt"](args.TEXT.toString(), key, {
       iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
-    });
+    }).toString();
   }
   
   getout(args) {
