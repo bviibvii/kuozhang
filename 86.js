@@ -181,12 +181,11 @@ class HashAndEncrypt {
     const info = {
       id: "hashAndEncrypt",
       name: "哈希与加密",
-      color1: "#4D7EB4",
+      color1: "#3a0088",
       menuIconURI:
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAFCAAAAACyOJm3AAAAFklEQVQYV2P4DwMMEMgAI/+DE" +
-        "UIMBgAEWB7i7uidhAAAAABJRU5ErkJggg==",
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAJGSURBVHic7ZtddgIhDIVDT/dVXVntytSVpQ9iz3SaGS3kD7zfmz6EcE0CBCQCAAAAAACvSIl2YAtmPhHRx+KrKxFdSimXIJdyw8wHZj7z85yifU7BP0UTifQ/NIWZ+UxEBw1bpZSQuYQJ+ETkXKjWvfr5QLeauCt4lJCu9KYj3+rla9bGjUmfle2F1kUzmPlkETEvIaCVeAv7c4toPUGW66LKCp8Cj+iQotxiHHc8J+YtoMueaT0Ry72a51hERG+WxoP41WzQXKhCkIr7TONFRKBpO8q73eUh4HorcXUY040Za6ArELATCNgJBOwEAnYCATOz0SGJYJzTCCvcshmjKqbqQZt5nPaRVpNBrQaOJB7RT9srR2o/SJnQrjA/ePEQ6dvdQYnmWzZLeGNRi3bKtEhrw/LlVswPnu7XfBIpElttda1E64FHelah5XvzKiyk6lerrSDWrX/fxW7E1F0ipHFTHWxOuZHT947GHNI3E/i2h0v7wiBtBEplwXqMaSJwK+Iy1tqUEbgnlOU400TgSKQUcCcSRttrbmO9D+S/HRT186rGHFJGYGX9giHli4bMAg4BBOwEAnYCATuBgJ1AwE5GEnCuP1p7NVSreZOLKo05vGs7pU32Ru1IKayK0DJrKhE9Ao7+f4zP1eemoyKuNSvu15oSFh2T6fFajbVg+X1MXPkRnIl16AGSs9E+7T1vSyHkRtSpiKdS9OuWYMj617vw4Ylvrx0NI0tGEFFzu6V+EikVIjpSrgbAceEbAAAAAAAAIJJvZVRRj0eLGPcAAAAASUVORK5CYII=",
 
-      blockIconURI: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAEtklEQVRoge2ZW4hWVRTHf984Kk1jlj2kI2H2UIwRacVot7EiSLtQBFlPRWUvSQTdsJCCyogy6CWSiMoeqrGioKDJLmpWYxcjxyZSJ4hRuznihZnQRj09rP/unO+b852z9/edT3qYPxz2OXuv9V9rX87Za68DYxhDQ1AqmO9sYAEwDzgDaAMmq20/8BuwDegBuoEfC7Y/CuOAl4HdwAfAyRmy44E7gF4gCrw2A7eLoxpagC758jZwXEhHbqww+FIVuYuBvoTcHuBN4DagA5ghR1p036G2Lsk6vT7goio2llf4cndIR96X0tPAQeCIOpfE/cCI5AaAxUBzgI1m4E7pRuK6t0LmioT9JyT3TYANfpHS6SKPgMPAc8DMBGkErAAmhpBXYCLwbILvcezdekydiICngON1P0TAuz0opTY9P0g8+u76B5uForBYnBE2AxFwFFsVJWACNphHyX6nyrBJRFcm6s4BPiLuyJL6fR+FJQn+dcCFibY5qt8RQuiWzocV9d2qf71WTz3wRhXbq1T/YgjZNOy7HwGPqO4SPR8ATqrH0xxMkY1INgHuwpbUIeDMUMKbpRwBn2BT7b5kjcYK2foUeJcClvMiYG+CaASbrUZjOvZiO7vD2Ke6LpxCvG6/rpcsAN/K5jvAqXnCTR6EfwK/6n5t7X4FY53KrXh8qXw6AvbpBfgipe1qYKeMLfTk89HbUGG7EGzDpnl2StsO4rU8EMCZp3eu2rb6kPnOiAvF93jKF4FBlScWSepinpaUtoXY6A5gZxFf5Om1yObBIE9z4JbAsYa3XZ+ldVp9vhSCun3oAP7ARuXLAL2vdCXPJ83A56oP4YmA34HzA/TK0IntqBEWJrQG6G6R3irsKDAdeE11vQE8rcQhyhDVT5FVMYP4TLKS8CTFfOJBSF7DxIGgL5qwiDcC/sJjl3coYUFiBKzBEhG1YA7wHjYgg9jIpu1DPhiX8OljPAf2Bins5dgEiL5oA/Zhvl3vo7BZwvc10Kla8QDm2/d5gudJcB922P+/oZV4VsqWaeU+cq3K1diL6TAN+A74rEEOpmEtFsonl/cQ8Jbur8tSXoP1NpnDmgn0E395phblaQamJuz1U74hLlJ9dxaBi3Lb9TwZ+JnyT+hlhbqcjssrbP5EHLi2kxIVVy6tKSpd5PkMdtjvA15V3axCXU7HWSpfke124lzBbpVZ+ej/ZuQmLDo9gmUuZgG3qu35Ql1OxwuydYtsH5IvC+Rb7jnlYUbvxg+pbTbhMVet6JEtdzpcmuLX0iyCJmAZ1tte4B7iXXQCNjLDhCWrQzEe+Fu2XGq0JF965dsy/A+FqfiB8pFqBFxqdFOIUmivHPkFgXohmKcyd/dOIrQj7v24NENmPbAdeBSYC5yga67qthOnetIwX2XIuSUYLv+7K0PG97dbNeyiPO9bONqId/j1GXLO0ZXYAeuAri2qy+uIyzH3E/+fKQwlLM6KgI3ApAzZPEfz2ifJhkueF4prRLyf/Fir3o4gG+63xlWePnphtUiXe8gW0RGAJyXX5SHrjZ0i7fSQLaojnQSkYX2TCiOE7+bVuEMTfYfx+Pnpu49sDDS+IaMtLaOfhZ5A+TGMoUj8CyaTiB/WbnspAAAAAElFTkSuQmCC",
+      blockIconURI: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAJGSURBVHic7ZtddgIhDIVDT/dVXVntytSVpQ9iz3SaGS3kD7zfmz6EcE0CBCQCAAAAAACvSIl2YAtmPhHRx+KrKxFdSimXIJdyw8wHZj7z85yifU7BP0UTifQ/NIWZ+UxEBw1bpZSQuYQJ+ETkXKjWvfr5QLeauCt4lJCu9KYj3+rla9bGjUmfle2F1kUzmPlkETEvIaCVeAv7c4toPUGW66LKCp8Cj+iQotxiHHc8J+YtoMueaT0Ry72a51hERG+WxoP41WzQXKhCkIr7TONFRKBpO8q73eUh4HorcXUY040Za6ArELATCNgJBOwEAnYCATOz0SGJYJzTCCvcshmjKqbqQZt5nPaRVpNBrQaOJB7RT9srR2o/SJnQrjA/ePEQ6dvdQYnmWzZLeGNRi3bKtEhrw/LlVswPnu7XfBIpElttda1E64FHelah5XvzKiyk6lerrSDWrX/fxW7E1F0ipHFTHWxOuZHT947GHNI3E/i2h0v7wiBtBEplwXqMaSJwK+Iy1tqUEbgnlOU400TgSKQUcCcSRttrbmO9D+S/HRT186rGHFJGYGX9giHli4bMAg4BBOwEAnYCATuBgJ1AwE5GEnCuP1p7NVSreZOLKo05vGs7pU32Ru1IKayK0DJrKhE9Ao7+f4zP1eemoyKuNSvu15oSFh2T6fFajbVg+X1MXPkRnIl16AGSs9E+7T1vSyHkRtSpiKdS9OuWYMj617vw4Ylvrx0NI0tGEFFzu6V+EikVIjpSrgbAceEbAAAAAAAAIJJvZVRRj0eLGPcAAAAASUVORK5CYII=",
 
       // Optional: Link to documentation content for this extension.
       // If not present, offer no link.
@@ -504,20 +503,6 @@ class HashAndEncrypt {
           ]
         }
       },
-
-      // 可选:翻译
-      translation_map: {
-        "zh-cn": {
-          "hashAndEncrypt.name": "hash and encrypt",
-          "someBlocks.setValue": "设置[KEY]=[VALUE]",
-          "someBlocks.getValue": "获取[KEY]的值",
-        },
-        en: {
-          "someBlocks.name": "CCW Lab",
-          "someBlocks.setValue": "set[KEY]=[VALUE]",
-          "someBlocks.getValue": "get[KEY]",
-        },
-      },
     };
     for (const name in this.cryptographicFunctions()) {
       info.menus.cryptographicFunctions.items.push({
@@ -564,12 +549,7 @@ class HashAndEncrypt {
   }
 
   isValidBase64(args) {
-    try {
-      this.base64Decode(args);
-      return true;
-    } catch (error) {
-      return false;
-    }
+    return this.base64Decode(args) == "错误的base64";
   }
 
   setReturnType(args) {
