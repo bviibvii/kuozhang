@@ -176,7 +176,9 @@ class HashAndEncrypt {
   iv = CryptoJS.enc.Hex.parse("0000000000000000");
   encryptMode = CryptoJS.mode.CBC;
   encryptPad = CryptoJS.pad.Pkcs7;
-  info = {
+
+  getInfo() {
+    const info = {
       id: "hashAndEncrypt",
       name: "哈希与加密",
       color1: "#4D7EB4",
@@ -333,30 +335,6 @@ class HashAndEncrypt {
           func: "PBKDF2",
         },
         {
-          opcode: "setSalt",
-          blockType: Scratch.BlockType.COMMAND,
-          text: "设置盐 [SALT]",
-          arguments: {
-            SALT: {
-              type: Scratch.ArgumentType.STRING,
-              defaultValue: "0000000000000000"
-            }
-          },
-          func: "setSalt",
-        },
-        {
-          opcode: "setIv",
-          blockType: Scratch.BlockType.COMMAND,
-          text: "设置向量 [IV]",
-          arguments: {
-            IV: {
-              type: Scratch.ArgumentType.STRING,
-              defaultValue: "0000000000000000"
-            }
-          },
-          func: "setIv",
-        },
-        {
           opcode: "randomHex",
           blockType: Scratch.BlockType.REPORTER,
           text: "随机十六进制 [LEN]",
@@ -367,18 +345,6 @@ class HashAndEncrypt {
             }
           },
           func: "randomHex",
-        },
-        {
-          opcode: "setReturnType",
-          blockType: Scratch.BlockType.COMMAND,
-          text: "设置返回类型 [TYPE]",
-          arguments: {
-            TYPE: {
-              type: Scratch.ArgumentType.STRING,
-              menu: "returnType"
-            },
-          },
-          func: "setReturnType",
         },
         {
           opcode: "encrypt",
@@ -421,6 +387,42 @@ class HashAndEncrypt {
           func: "decrypt",
         },
         {
+          opcode: "setSalt",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置盐 [SALT]",
+          arguments: {
+            SALT: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "0000000000000000"
+            }
+          },
+          func: "setSalt",
+        },
+        {
+          opcode: "setIv",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置向量 [IV]",
+          arguments: {
+            IV: {
+              type: Scratch.ArgumentType.STRING,
+              defaultValue: "0000000000000000"
+            }
+          },
+          func: "setIv",
+        },
+        {
+          opcode: "setReturnType",
+          blockType: Scratch.BlockType.COMMAND,
+          text: "设置返回类型 [TYPE]",
+          arguments: {
+            TYPE: {
+              type: Scratch.ArgumentType.STRING,
+              menu: "returnType"
+            },
+          },
+          func: "setReturnType",
+        },
+        {
           opcode: "setCryptoMode",
           blockType: Scratch.BlockType.COMMAND,
           text: "设置加密模式 [METHOD]",
@@ -443,46 +445,11 @@ class HashAndEncrypt {
             }
           },
           func: "setCryptPad",
-        },
-        {
-          opcode: "test",
-
-          blockType: Scratch.BlockType.COMMAND,
-
-          text: "测试 [TEXT]",
-
-          arguments: {
-            TEXT: {
-              type: Scratch.ArgumentType.STRING,
-
-              defaultValue: "Hello world!"
-            },
-          },
-
-          func: "test",
-        },
-        {
-          opcode: "DEBUGgetout",
-
-          blockType: Scratch.BlockType.REPORTER,
-
-          text: "DEBUG获取输出 [TEXT]",
-
-          arguments: {
-            TEXT: {
-              type: Scratch.ArgumentType.REPORTER,
-
-              defaultValue: "Hello world!"
-            },
-          },
-
-          func: "getout",
         }
       ],
 
       menus: {
         HashMethod: {
-          acceptReporters: true,
           items: [
             { text: "SHA-1", value: "SHA-1" },
             { text: "SHA-224", value: "SHA-224" },
@@ -498,7 +465,6 @@ class HashAndEncrypt {
           ]
         },
         HMACMethod: {
-          acceptReporters: true,
           items: [
             { text: "SHA-1", value: "SHA-1" },
             { text: "SHA-224", value: "SHA-224" },
@@ -510,7 +476,6 @@ class HashAndEncrypt {
           ]
         },
         progressiveHmacMethod: {
-          acceptReporters: true,
           items: [
             { text: "SHA-1", value: "SHA-1" },
             { text: "SHA-224", value: "SHA-224" },
@@ -553,10 +518,7 @@ class HashAndEncrypt {
           "someBlocks.getValue": "get[KEY]",
         },
       },
-  }
-
-  getInfo() {
-    const info = this.info;
+    };
     for (const name in this.cryptographicFunctions()) {
       info.menus.cryptographicFunctions.items.push({
         text: name,
@@ -714,21 +676,4 @@ class HashAndEncrypt {
 }
 
 /** dont forget register your extension to Scratch */
-const HashAndEncryptInstance = new HashAndEncrypt();
-Scratch.extensions.register(HashAndEncryptInstance);
-HashAndEncryptInstance.info.blocks.arguments = [
-  {
-          opcode: "base64Encode",
-          blockType: Scratch.BlockType.REPORTER,
-          text: "base64编码 [TEXT]",
-          arguments: {
-            TEXT: {
-              type: Scratch.ArgumentType.STRING,
-              defaultValue: "Hello world!"
-            },
-          },
-          func: "base64Encode",
-        }
-];
-HashAndEncryptInstance.name = "测试";
-Scratch.extensions.register(HashAndEncryptInstance);
+Scratch.extensions.register(new HashAndEncrypt());
