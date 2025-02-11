@@ -175,7 +175,7 @@ class HashAndEncrypt {
   salt = CryptoJS.enc.Hex.parse("0000000000000000");
   iv = CryptoJS.enc.Hex.parse("0000000000000000");
   encryptMode = CryptoJS.mode.CBC;
-  encryptPaadding = CryptoJS.pad.Pkcs7;
+  encryptPad = CryptoJS.pad.Pkcs7;
 
   getInfo() {
     const info = {
