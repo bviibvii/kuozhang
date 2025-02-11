@@ -333,7 +333,7 @@ class HashAndEncrypt {
         },
         {
           opcode: "setSalt",
-          blockType: Scratch.BlockType.REPORTER,
+          blockType: Scratch.BlockType.COMMAND,
           text: "设置盐 [SLAT]",
           arguments: {
             SALT: {
@@ -370,18 +370,18 @@ class HashAndEncrypt {
         {
           opcode: "encrypt",
           blockType: Scratch.BlockType.REPORTER,
-          text: "加密 [MEYHOD] [TEXT] [KEY]",
+          text: "加密 [METHOD] [TEXT] [KEY]",
           arguments: {
             METHOD: {
               type: Scratch.ArgumentType.STRING,
               menu: "cryptographicFunctions"
             },
             TEXT: {
-              type: Scratch.ArgumentType.String,
+              type: Scratch.ArgumentType.STRING,
               defaultValue: "Hello world!"
             },
             KEY: {
-              type: Scratch.ArgumentType.String,
+              type: Scratch.ArgumentType.STRING,
               defaultValue: "密钥"
             }
           },
@@ -600,7 +600,7 @@ class HashAndEncrypt {
   }
 
   encrypt(args) {
-    return CryptoJS.AES.encrypt(args.TEXT.toString(), args.KEY.toString(), {
+    return this.cryptographicFunctions[args.METHOD.toString()].encrypt(args.TEXT.toString(), args.KEY.toString(), {
       iv: this.salt,           // 使用盐作为 IV（示例，实际应随机生成）
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
